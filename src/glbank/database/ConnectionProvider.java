@@ -30,8 +30,8 @@ public class ConnectionProvider {
     }
 
     public boolean isEmployeePasswordValid(String username, String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        boolean ret=false;
-        String query = "SELECT idemp FROM LoginEmployee WHERE login LIKE ? AND password LIKE ?";
+        boolean ret = false;
+        String query = "SELECT idemp FROM LoginEmployee WHERE login LIKE BINARY ? AND password LIKE BINARY ?";
         Connection conn = getConnection();
         if (conn != null) {
             try {
@@ -39,7 +39,7 @@ public class ConnectionProvider {
                 ps.setString(1, username);
                 ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
-                ret=rs.next();
+                ret = rs.next();
                 conn.close();
             } catch (SQLException ex) {
                 System.out.println("Error: " + ex.toString());
@@ -47,10 +47,31 @@ public class ConnectionProvider {
         }
         return ret;
     }
+    
+    public boolean isEmployeePasswordValidById(int idemp, String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        boolean ret = false;
+        String query = "SELECT * FROM LoginEmployee WHERE idemp = ? AND password LIKE BINARY ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setInt(1, idemp);
+                ps.setString(2, password);
+                ResultSet rs = ps.executeQuery();
+                ret = rs.next();
+                System.out.println(idemp + " "+password);
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+        System.out.println(ret);
+        return ret;
+    }
 
     public int getEmployeeId(String username) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         int id = -1;
-        String query = "SELECT idemp FROM LoginEmployee WHERE login LIKE ?";
+        String query = "SELECT idemp FROM LoginEmployee WHERE login LIKE BINARY ?";
         Connection conn = getConnection();
         if (conn != null) {
             try {
@@ -99,14 +120,36 @@ public class ConnectionProvider {
             try {
                 PreparedStatement ps = conn.prepareStatement(query);
                 ps.setInt(1, idemp);
+
                 ResultSet rs = ps.executeQuery();
-                employee = new Employee(idemp, rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("position").charAt(0));
+                if (rs.next()) {
+                    employee = new Employee(idemp, rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), (rs.getString("position")).charAt(0));
+                    
+                }
+
                 conn.close();
             } catch (SQLException ex) {
                 System.out.println("Error: " + ex.toString());
             }
         }
         return employee;
+    }
+    
+    public void setNewPassword(int idemp, String password) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String query = "UPDATE LoginEmployee SET password = ? WHERE idemp = ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, password);
+                ps.setInt(2, idemp);
+                ps.execute();
+                
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
     }
 
 }

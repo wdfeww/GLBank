@@ -152,6 +152,11 @@ public class LoginFrom extends javax.swing.JFrame {
                     int id = connection.getEmployeeId(login);
                     connection.logEmployeeAccess(id);
                     lblErrorMessage.setText("");
+                    
+                    MainForm mainform = new MainForm(id);
+                    this.setVisible(false);
+                    mainform.setVisible(true);
+                    
                 } else {
                     System.out.println("Not logged");
                     lblErrorMessage.setText("Invalid username or password");
