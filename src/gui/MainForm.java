@@ -33,7 +33,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         if(employee!=null){
             String name;
             name= employee.getFirstname() +" "+ employee.getLastname();
-            lblEmployeeName.setText("Logged user: "+name);
+            lblEmployeeName.setText("Logged in user: "+name);
         }
     }
     
@@ -45,6 +45,9 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         lblEmployeeName = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -61,7 +64,16 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
 
         lblEmployeeName.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblEmployeeName.setForeground(new java.awt.Color(0, 0, 0));
-        lblEmployeeName.setText("Logged user : FirstName LastName");
+        lblEmployeeName.setText("Logged in user : FirstName LastName");
+
+        jLabel1.setText("Select clinet :");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jMenu3.setText("Menu");
 
@@ -93,17 +105,29 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblEmployeeName)
-                .addContainerGap(474, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEmployeeName)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(457, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblEmployeeName)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         pack();
@@ -120,10 +144,16 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -131,6 +161,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblEmployeeName;
     // End of variables declaration//GEN-END:variables
 
