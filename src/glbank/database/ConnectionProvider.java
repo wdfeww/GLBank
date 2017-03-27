@@ -1,13 +1,17 @@
 package glbank.database;
 
+import glbank.Client;
 import glbank.Employee;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ConnectionProvider {
 
@@ -151,5 +155,61 @@ public class ConnectionProvider {
             }
         }
     }
+    
+    
+    
+    
+    public List<Client> getAllClients() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+       List<Client> clients = new ArrayList<>();
+             String query = "SELECT * FROM Clients"+
+                     " INNER JOIN ClientDetails ON Clients.idc = ClientDetails.idc"+
+                     " WHERE disable = 'F'"+
+                     " ORDER BY lastname, firstname";
+             Connection conn = getConnection();
+              try {
+             Statement statement = conn.createStatement();
+             ResultSet rs = statement.executeQuery(query);
+             if(conn!=null){
+                  while(rs.next()){
+                      int idc = rs.getInt("Clients.idc");
+                      String firstname = rs.getString("firstname");
+                      String lastname = rs.getString("lastname");
+                      Date date = rs.getDate("dob");
+                      Client client = new Client(idc,firstname,lastname,date);
+                      clients.add(client);
+             } conn.close();
+             }
+               
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+             return clients;
+    }
+    
+    
+    
+    /*
+     public Client getClient(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Client client = null;
+        String query = "SELECT * FROM Clients inner join WHERE idc = ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setInt(1, idc);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    employee = new Employee(idemp, rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), (rs.getString("position")).charAt(0));
+                    
+                }
+
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+        return employee;
+    }*/
 
 }

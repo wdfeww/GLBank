@@ -5,6 +5,8 @@
         <group>
             <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/gui/ChangePassword.java</file>
             <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/gui/LoginFrom.java</file>
+            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/glbank/Client.java</file>
+            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/gui/NewClient.java</file>
             <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/glbank/database/ConnectionProvider.java</file>
             <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/gui/MainForm.java</file>
         </group>
