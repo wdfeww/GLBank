@@ -6,9 +6,11 @@
 package gui;
 
 import glbank.database.ConnectionProvider;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 
 /**
  *
@@ -22,7 +24,42 @@ public class LoginFrom extends javax.swing.JFrame {
     public LoginFrom() {
         initComponents();
         lblErrorMessage.setText("");
-        
+     
+
+              
+    }
+    private void login(){
+        String login = txtLogin.getText();
+        char[] input = txtPassword.getPassword();
+        String password = new String(input);
+
+        if (!login.equals("") && password.length() >= 3) {
+            ConnectionProvider connection = new ConnectionProvider();
+
+            try {
+                if (connection.isEmployeePasswordValid(login, password)) {
+                    System.out.println("Logged in");
+                    int id = connection.getEmployeeId(login);
+                    connection.logEmployeeAccess(id);
+                    lblErrorMessage.setText("");
+                    
+                    MainForm mainform = new MainForm(id);
+                    mainform.setLocationRelativeTo(null);
+                    this.setVisible(false);
+                    mainform.setVisible(true);
+                    
+                } else {
+                    System.out.println("Not logged");
+                    lblErrorMessage.setText("Invalid username or password");
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**
@@ -75,9 +112,22 @@ public class LoginFrom extends javax.swing.JFrame {
         txtPassword.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         btnOk.setText("Login");
+        btnOk.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnOkMouseClicked(evt);
+            }
+        });
         btnOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOkActionPerformed(evt);
+            }
+        });
+        btnOk.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                btnOkKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnOkKeyTyped(evt);
             }
         });
 
@@ -140,38 +190,20 @@ public class LoginFrom extends javax.swing.JFrame {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         // TODO add your handling code here:
-        String login = txtLogin.getText();
-        char[] input = txtPassword.getPassword();
-        String password = new String(input);
-
-        if (!login.equals("") && password.length() >= 3) {
-            ConnectionProvider connection = new ConnectionProvider();
-
-            try {
-                if (connection.isEmployeePasswordValid(login, password)) {
-                    System.out.println("Logged in");
-                    int id = connection.getEmployeeId(login);
-                    connection.logEmployeeAccess(id);
-                    lblErrorMessage.setText("");
-                    
-                    MainForm mainform = new MainForm(id);
-                    mainform.setLocationRelativeTo(null);
-                    this.setVisible(false);
-                    mainform.setVisible(true);
-                    
-                } else {
-                    System.out.println("Not logged");
-                    lblErrorMessage.setText("Invalid username or password");
-                }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(LoginFrom.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        
     }//GEN-LAST:event_btnOkActionPerformed
+
+    private void btnOkKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnOkKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOkKeyTyped
+
+    private void btnOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOkMouseClicked
+        login();
+    }//GEN-LAST:event_btnOkMouseClicked
+
+    private void btnOkKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnOkKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnOkKeyReleased
 
     /**
      * @param args the command line arguments
@@ -180,12 +212,6 @@ public class LoginFrom extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
 
 
- /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginFrom().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

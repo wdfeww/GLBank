@@ -14,14 +14,15 @@ import java.text.SimpleDateFormat;
  * @author Client
  */
 public class PanelInfo extends javax.swing.JPanel {
-        private int idc;
-        
+
+    private int idc;
+
     /**
      * Creates new form jPanelInfo
      */
-    public PanelInfo(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    public PanelInfo(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         initComponents();
-        this.idc=idc;
+        this.idc = idc;
         setInfo();
     }
 
@@ -97,39 +98,40 @@ public class PanelInfo extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStreet)
-                            .addComponent(lblDob)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCity)
-                            .addComponent(lblPostcode)
-                            .addComponent(lblHouseNumber)))
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel8))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblCity)
+                                .addComponent(lblPostcode)
+                                .addComponent(lblHouseNumber)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel5))
+                            .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblStreet)
+                                .addComponent(lblEmail)
+                                .addComponent(lblDob))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel9))
+                            .addComponent(jLabel2))
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEmail)
                             .addComponent(lblLastName)
                             .addComponent(lblFirstName)
                             .addComponent(lblId))))
-                .addContainerGap(691, Short.MAX_VALUE))
+                .addContainerGap(706, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,7 +148,7 @@ public class PanelInfo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(lblLastName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblEmail))
@@ -154,7 +156,7 @@ public class PanelInfo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(lblDob))
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lblStreet))
@@ -170,7 +172,7 @@ public class PanelInfo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(lblCity))
-                .addGap(34, 34, 34))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -196,17 +198,17 @@ public class PanelInfo extends javax.swing.JPanel {
     private javax.swing.JLabel lblStreet;
     // End of variables declaration//GEN-END:variables
 
-    private void setInfo() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    private void setInfo() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ConnectionProvider connection = new ConnectionProvider();
         Client client = connection.getClientById(idc);
-       lblId.setText(""+client.getIdc());
-       lblFirstName.setText(client.getFirstname());
-       lblLastName.setText(client.getLastname());
-       lblEmail.setText(client.getEmail());
-       lblStreet.setText(client.getStreet());
-       lblHouseNumber.setText(""+client.getHousenumber());
-       lblPostcode.setText(client.getPostcode());
-       lblCity.setText(client.getCity());
-       lblDob.setText(new SimpleDateFormat("yyyy-MM-dd").format(client.getDob()));
+        lblId.setText("" + client.getIdc());
+        lblFirstName.setText(client.getFirstname());
+        lblLastName.setText(client.getLastname());
+        lblEmail.setText(client.getEmail());
+        lblStreet.setText(client.getStreet());
+        lblHouseNumber.setText("" + client.getHousenumber());
+        lblPostcode.setText(client.getPostcode());
+        lblCity.setText(client.getCity());
+        lblDob.setText(new SimpleDateFormat("yyyy-MM-dd").format(client.getDob()));
     }
 }

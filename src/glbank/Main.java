@@ -1,7 +1,7 @@
 
 package glbank;
 
-import glbank.database.ConnectionProvider;
+
 import gui.LoginFrom;
 
 

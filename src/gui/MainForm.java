@@ -8,6 +8,8 @@ package gui;
 import glbank.Client;
 import glbank.Employee;
 import glbank.database.ConnectionProvider;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,18 +25,21 @@ public class MainForm extends javax.swing.JFrame {
     /**
      * Creates new form MainForm
      */
+   
     public MainForm(int idemp) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         initComponents();
         this.idemp=idemp;
         conn= new ConnectionProvider();
+        printEmployeeName();
         initForm();
-       
       
     }
+    
 private void initForm() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        printEmployeeName();
+        
         showListOfClients();
-         initTabs();
+        
+        
        
     }
     private void printEmployeeName() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
@@ -215,6 +220,20 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        NewClient newclient= new NewClient(this,true);
        newclient.setLocationRelativeTo(null);
+      newclient.addWindowListener(new WindowAdapter() {
+    @Override
+    public void windowClosed(WindowEvent e) {
+        try {
+            initForm();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+});
         newclient.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -250,6 +269,8 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
 
     private void showListOfClients() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
    list = new ConnectionProvider().getAllClients();
+   comboListOfAllClients.removeAllItems();
+   comboListOfAllClients.addItem("Choose:");
     if(list!=null && list.size()>0){
         for(Client client: list){
             String item = client.getLastname() + " " + client.getFirstname() + " [" + client.getDob()+"]";
@@ -258,10 +279,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
     }
     }
 
-    private void initTabs() {
-       
-        
-    }
+    
 
     
 }

@@ -90,6 +90,11 @@ public class NewClient extends javax.swing.JDialog {
         });
 
         jButton2.setText("Create");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -343,26 +348,7 @@ public class NewClient extends javax.swing.JDialog {
            city = txtcity.getText();
           
            dob = dateChooserCombo1.getSelectedDate().getTime();
-            
-           /* SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd");
-             try {
-                 Date d = sdf.parse(date);
-                 sdf.applyPattern("yyyy-MM-dd");
-               String b = sdf.format(d);
-               dob = df.parse(b);
-               ---->>String newDateString = df.format(dob);
-               
-             } catch (ParseException ex) {
-                 Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
-             }*/
-            
-           
-           
-          
-           
-           
-           
+       
            if(email.equals("") ||email.length()<9 || street.equals("") || (housenumber < 1)  || postcode.equals("") || city.equals("")){
                lblerrorMessage.setText("Please fill or edit contact details of client");
            seq2 = false;
@@ -421,18 +407,17 @@ public class NewClient extends javax.swing.JDialog {
                 lblconfirmPass.setText("");
                 
         }
-        else lblconfirmPass.setText("Passwords are not same!");
-            seq5=false;
+        else {lblconfirmPass.setText("Passwords are not same!");
+            seq5=false;}
         }
            
-           System.out.println("1."+seq1+"2."+seq2+"3."+seq3+"4."+seq4+"5."+seq5);
-      if(seq1&&seq2&&seq3&&seq4){
+          
+      if(seq1&&seq2&&seq3&&seq4&&seq5){
             
             Client client = new Client(0, firstname,lastname, email, street, housenumber, postcode, city, username,false, false,dob);
              try {
                  connection.insertClientToDatabase(client, password);
-                 
-                 
+                 this.dispose();
                  
              } catch (ClassNotFoundException ex) {
                  Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -441,15 +426,20 @@ public class NewClient extends javax.swing.JDialog {
              } catch (IllegalAccessException ex) {
                  Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
              }
-             this.dispose();
+             
+            
         }    
-        
+  
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txthousenumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txthousenumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txthousenumberActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // gui.MainForm.initForm();
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
