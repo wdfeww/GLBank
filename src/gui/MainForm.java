@@ -9,6 +9,8 @@ import glbank.Client;
 import glbank.Employee;
 import glbank.database.ConnectionProvider;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.util.List;
 public class MainForm extends javax.swing.JFrame {
     private int idemp;
     private ConnectionProvider conn;
+    private List<Client> list;
     /**
      * Creates new form MainForm
      */
@@ -25,11 +28,14 @@ public class MainForm extends javax.swing.JFrame {
         this.idemp=idemp;
         conn= new ConnectionProvider();
         initForm();
-        
+       
+      
     }
 private void initForm() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         printEmployeeName();
         showListOfClients();
+         initTabs();
+       
     }
     private void printEmployeeName() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         Employee employee = conn.getEmployee(idemp);
@@ -53,6 +59,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         comboListOfAllClients = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -87,6 +94,8 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
             }
         });
 
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(900, 400));
+
         jMenu3.setText("Menu");
 
         jMenuItem1.setText("Change password");
@@ -109,6 +118,16 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("About");
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu4ActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -122,6 +141,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
                 .addGap(35, 35, 35)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jSeparator2)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,8 +150,11 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
                     .addGroup(layout.createSequentialGroup()
                         .addGap(82, 82, 82)
                         .addComponent(comboListOfAllClients, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(411, Short.MAX_VALUE))
-            .addComponent(jSeparator2)
+                .addContainerGap(478, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +167,9 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(comboListOfAllClients, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
@@ -156,6 +181,7 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         ChangePassword chpwdia= new ChangePassword(this,true,idemp);
+        chpwdia.setLocationRelativeTo(null);
         chpwdia.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -166,13 +192,41 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void comboListOfAllClientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboListOfAllClientsActionPerformed
-        // TODO add your handling code here:
+        int  index = comboListOfAllClients.getSelectedIndex();
+        jTabbedPane1.removeAll();
+        if(index>0){
+            Client client = list.get(index-1);
+             PanelInfo panelinfo = null;
+            try {
+                panelinfo = new PanelInfo(client.getIdc());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             jTabbedPane1.add("Information",panelinfo);
+        }
+        
+        
     }//GEN-LAST:event_comboListOfAllClientsActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        NewClient newclient= new NewClient(this,true);
+       newclient.setLocationRelativeTo(null);
         newclient.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
+       
+    }//GEN-LAST:event_jMenu4ActionPerformed
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        About about = new About(this,true);
+        about.setLocationRelativeTo(null);
+       about.setVisible(true);
+    }//GEN-LAST:event_jMenu4MouseClicked
 
     
    
@@ -190,17 +244,23 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblEmployeeName;
     // End of variables declaration//GEN-END:variables
 
     private void showListOfClients() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-    List<Client> list = new ConnectionProvider().getAllClients();
+   list = new ConnectionProvider().getAllClients();
     if(list!=null && list.size()>0){
         for(Client client: list){
             String item = client.getLastname() + " " + client.getFirstname() + " [" + client.getDob()+"]";
             comboListOfAllClients.addItem(item);
         }
     }
+    }
+
+    private void initTabs() {
+       
+        
     }
 
     

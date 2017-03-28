@@ -16,7 +16,6 @@ public class Client {
         private boolean disable;
         private boolean blocked;
         private Date dob;
-        
 
     public Client(int idc, String firstname, String lastname, Date dob) {
         this.idc = idc;
@@ -33,6 +32,10 @@ public class Client {
         this.blocked = false;
     }
 
+    public void setIdc(int idc) {
+        this.idc = idc;
+    }
+
     public Client(int idc, String firstname, String lastname, String email, String street, int housenumber, String postcode, String city, String username, boolean disable, boolean blocked, Date dob) {
         this.idc = idc;
         this.firstname = firstname;
@@ -47,8 +50,6 @@ public class Client {
         this.blocked = blocked;
         this.dob = dob;
     }
-
-   
 
     public String getCity() {
         return city;
@@ -97,9 +98,4 @@ public class Client {
     public Date getDob() {
         return dob;
     }
-        
-        
-        
-
-    
 }

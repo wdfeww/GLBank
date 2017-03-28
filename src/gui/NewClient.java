@@ -5,7 +5,16 @@
  */
 package gui;
 
+import glbank.Client;
+import glbank.database.ConnectionProvider;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,6 +28,12 @@ public class NewClient extends javax.swing.JDialog {
     public NewClient(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        lblerrormesusername.setText("");
+        lblerrorMessage.setText("");
+        lblerrorNumber.setText("");
+        lblconfirmPass.setText("");
+        lblnewPass.setText("");
+        dateChooserCombo1.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
     /**
@@ -30,6 +45,7 @@ public class NewClient extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -54,6 +70,12 @@ public class NewClient extends javax.swing.JDialog {
         txtpassword = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
         txtpasswordconfirm = new javax.swing.JPasswordField();
+        lblerrormesusername = new javax.swing.JLabel();
+        lblerrorMessage = new javax.swing.JLabel();
+        lblerrorNumber = new javax.swing.JLabel();
+        lblnewPass = new javax.swing.JLabel();
+        lblconfirmPass = new javax.swing.JLabel();
+        dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -94,6 +116,12 @@ public class NewClient extends javax.swing.JDialog {
 
         jLabel11.setText("City:");
 
+        txthousenumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txthousenumberActionPerformed(evt);
+            }
+        });
+
         txtpassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtpasswordActionPerformed(evt);
@@ -108,6 +136,21 @@ public class NewClient extends javax.swing.JDialog {
             }
         });
 
+        lblerrormesusername.setForeground(new java.awt.Color(255, 0, 0));
+        lblerrormesusername.setText("ERROR");
+
+        lblerrorMessage.setForeground(new java.awt.Color(255, 0, 0));
+        lblerrorMessage.setText("ERROR");
+
+        lblerrorNumber.setForeground(new java.awt.Color(255, 0, 0));
+        lblerrorNumber.setText("ERROR");
+
+        lblnewPass.setForeground(new java.awt.Color(255, 0, 0));
+        lblnewPass.setText("ERROR");
+
+        lblconfirmPass.setForeground(new java.awt.Color(255, 0, 0));
+        lblconfirmPass.setText("ERROR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,8 +160,7 @@ public class NewClient extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(170, 170, 170))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -129,31 +171,51 @@ public class NewClient extends javax.swing.JDialog {
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel4)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
-                                        .addComponent(jLabel5))
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel12))
-                                .addGap(4, 4, 4)))
+                                    .addComponent(jLabel11))
+                                .addGap(26, 26, 26)))
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtpostcode, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txthousenumber, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtstreet, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtemail, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtfirstname, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtlastname, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtemail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtstreet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txthousenumber, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtpostcode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtcity, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtusername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                            .addComponent(txtpassword, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                            .addComponent(txtlastname, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtcity)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblerrorNumber)
+                        .addGap(19, 19, 19)))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(158, 158, 158))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel12))
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblerrormesusername)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtusername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                .addComponent(txtpassword, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(lblnewPass)
+                            .addComponent(lblconfirmPass))
+                        .addGap(62, 62, 62))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(239, 239, 239)
+                .addComponent(lblerrorMessage)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,48 +223,64 @@ public class NewClient extends javax.swing.JDialog {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtstreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addComponent(lblerrormesusername)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(11, 11, 11)
+                        .addComponent(lblnewPass)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtstreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(lblconfirmPass)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txthousenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txthousenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblerrorNumber))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtpostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtpostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtcity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtusername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(lblerrorMessage)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -213,7 +291,7 @@ public class NewClient extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtpasswordconfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordconfirmActionPerformed
@@ -225,8 +303,153 @@ public class NewClient extends javax.swing.JDialog {
     }//GEN-LAST:event_txtpasswordActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       System.out.println(generatePassword());
+         boolean seq1= false;
+         boolean seq2= false;
+         boolean seq3= false;
+         boolean seq4= false;
+         boolean seq5= false;
+         String email="";
+         String street="";
+         int housenumber=0;
+         String postcode = "";
+         String city = "";
+         String username = "";
+         Date dob = new Date() ;
+         String password = "";
+      String firstname =  txtfirstname.getText();
+       String lastname = txtlastname.getText();
+       if( firstname.equals("") || lastname.equals("")){
+           lblerrorMessage.setText("Please fill First name and last name");
+           seq1 = false;
+       }else{
+           seq1 = true;
+           lblerrorMessage.setText("");
+            email = txtemail.getText();
+            street = txtstreet.getText();
+           
+           if(!txthousenumber.getText().equals("")){
+               try{
+             housenumber = Integer.parseInt(txthousenumber.getText());
+             lblerrorNumber.setText("");
+             seq1 = true;
+               }catch(Exception ex){
+               lblerrorNumber.setText("Please fill number");
+               seq1 = false;
+               }
+               
+           }
+               
+           postcode =  txtpostcode.getText();
+           city = txtcity.getText();
+          
+           dob = dateChooserCombo1.getSelectedDate().getTime();
+            
+           /* SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd");
+             try {
+                 Date d = sdf.parse(date);
+                 sdf.applyPattern("yyyy-MM-dd");
+               String b = sdf.format(d);
+               dob = df.parse(b);
+               ---->>String newDateString = df.format(dob);
+               
+             } catch (ParseException ex) {
+                 Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+             }*/
+            
+           
+           
+          
+           
+           
+           
+           if(email.equals("") ||email.length()<9 || street.equals("") || (housenumber < 1)  || postcode.equals("") || city.equals("")){
+               lblerrorMessage.setText("Please fill or edit contact details of client");
+           seq2 = false;
+           }
+           else{
+               seq2 = true;
+               lblerrorMessage.setText("");
+           }
+      
+       }
+           
+        String login =    txtusername.getText();       
+         ConnectionProvider connection = new ConnectionProvider();
+        try {
+            if(connection.existClientLogin(login)){
+                lblerrormesusername.setText("Username already exists");
+            seq3=false;
+            }
+            else{
+                lblerrormesusername.setText("");
+                username=login;
+                seq3=true;
+            }
+                } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(login.equals("")){
+            seq3 = false;
+            lblerrormesusername.setText("Please fill username");
+        }
+        
+        else{ lblerrormesusername.setText("");
+        username=login;
+        seq3=true;
+        }
+         char[] inputNewPassword = txtpassword.getPassword();
+        String newPassword = new String(inputNewPassword);
+        
+        char[] inputConfirmPassword = txtpasswordconfirm.getPassword();
+        String confirmPassword = new String(inputConfirmPassword);
+        
+        if(newPassword.equals("")||newPassword.length()<5){
+            lblnewPass.setText("Please fill right password");
+            seq4= false;
+        }
+        else  {
+            seq4=true;
+            lblnewPass.setText("");
+            if(newPassword.equals(confirmPassword)){
+                password = newPassword;
+                seq5=true;
+                lblconfirmPass.setText("");
+                
+        }
+        else lblconfirmPass.setText("Passwords are not same!");
+            seq5=false;
+        }
+           
+           System.out.println("1."+seq1+"2."+seq2+"3."+seq3+"4."+seq4+"5."+seq5);
+      if(seq1&&seq2&&seq3&&seq4){
+            
+            Client client = new Client(0, firstname,lastname, email, street, housenumber, postcode, city, username,false, false,dob);
+             try {
+                 connection.insertClientToDatabase(client, password);
+                 
+                 
+                 
+             } catch (ClassNotFoundException ex) {
+                 Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (InstantiationException ex) {
+                 Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (IllegalAccessException ex) {
+                 Logger.getLogger(NewClient.class.getName()).log(Level.SEVERE, null, ex);
+             }
+             this.dispose();
+        }    
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txthousenumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txthousenumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txthousenumberActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,6 +471,8 @@ public class NewClient extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private datechooser.beans.DateChooserCombo dateChooserCombo1;
+    private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -262,6 +487,11 @@ public class NewClient extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblconfirmPass;
+    private javax.swing.JLabel lblerrorMessage;
+    private javax.swing.JLabel lblerrorNumber;
+    private javax.swing.JLabel lblerrormesusername;
+    private javax.swing.JLabel lblnewPass;
     private javax.swing.JTextField txtcity;
     private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtfirstname;

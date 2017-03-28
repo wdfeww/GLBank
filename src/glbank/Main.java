@@ -9,7 +9,9 @@ public class Main {
 
    
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException  {
-        new LoginFrom().setVisible(true);
+       LoginFrom loginform = new LoginFrom();
+               loginform.setLocationRelativeTo(null);
+               loginform.setVisible(true);
    
     }
     

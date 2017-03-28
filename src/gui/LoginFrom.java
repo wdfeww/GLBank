@@ -22,6 +22,7 @@ public class LoginFrom extends javax.swing.JFrame {
     public LoginFrom() {
         initComponents();
         lblErrorMessage.setText("");
+        
     }
 
     /**
@@ -154,6 +155,7 @@ public class LoginFrom extends javax.swing.JFrame {
                     lblErrorMessage.setText("");
                     
                     MainForm mainform = new MainForm(id);
+                    mainform.setLocationRelativeTo(null);
                     this.setVisible(false);
                     mainform.setVisible(true);
                     
