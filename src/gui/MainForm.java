@@ -30,17 +30,13 @@ public class MainForm extends javax.swing.JFrame {
         initComponents();
         this.idemp=idemp;
         conn= new ConnectionProvider();
-        printEmployeeName();
         initForm();
       
     }
     
 private void initForm() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        
+        printEmployeeName();
         showListOfClients();
-        
-        
-       
     }
     private void printEmployeeName() throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         Employee employee = conn.getEmployee(idemp);
@@ -51,7 +47,6 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         }
     }
     
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,8 +208,6 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
             }
              jTabbedPane1.add("Information",panelinfo);
         }
-        
-        
     }//GEN-LAST:event_comboListOfAllClientsActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -247,9 +240,6 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
        about.setVisible(true);
     }//GEN-LAST:event_jMenu4MouseClicked
 
-    
-   
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboListOfAllClients;
     private javax.swing.JButton jButton1;
@@ -275,11 +265,6 @@ private void initForm() throws ClassNotFoundException, InstantiationException, I
         for(Client client: list){
             String item = client.getLastname() + " " + client.getFirstname() + " [" + client.getDob()+"]";
             comboListOfAllClients.addItem(item);
-        }
-    }
-    }
-
-    
-
+        }}}
     
 }

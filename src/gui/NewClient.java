@@ -33,6 +33,10 @@ public class NewClient extends javax.swing.JDialog {
         lblerrorNumber.setText("");
         lblconfirmPass.setText("");
         lblnewPass.setText("");
+        lblerrorMessage1.setText("");
+        String newPassword = generatePassword();
+        txtpassword.setText(newPassword);
+        txtpasswordconfirm.setText(newPassword);
         dateChooserCombo1.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
@@ -76,6 +80,7 @@ public class NewClient extends javax.swing.JDialog {
         lblnewPass = new javax.swing.JLabel();
         lblconfirmPass = new javax.swing.JLabel();
         dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
+        lblerrorMessage1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -156,52 +161,55 @@ public class NewClient extends javax.swing.JDialog {
         lblconfirmPass.setForeground(new java.awt.Color(255, 0, 0));
         lblconfirmPass.setText("ERROR");
 
+        lblerrorMessage1.setForeground(new java.awt.Color(255, 0, 0));
+        lblerrorMessage1.setText("ERROR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(170, 170, 170))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel11))
-                                .addGap(26, 26, 26)))
-                        .addGap(39, 39, 39)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel11))
+                        .addGap(57, 57, 57)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtpostcode, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtpostcode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                             .addComponent(txthousenumber, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtstreet, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtemail, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtfirstname, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtlastname, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtcity)
-                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+                            .addComponent(txtcity))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblerrorNumber)
-                        .addGap(19, 19, 19)))
-                .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblerrorNumber))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel2))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(dateChooserCombo1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                                .addGap(52, 52, 52))
+                            .addComponent(txtlastname, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtfirstname, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(lblerrorMessage1)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(62, 62, 62)))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(158, 158, 158))
+                        .addContainerGap(263, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -216,35 +224,19 @@ public class NewClient extends javax.swing.JDialog {
                                 .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.Alignment.LEADING))
                             .addComponent(lblnewPass)
                             .addComponent(lblconfirmPass))
-                        .addGap(62, 62, 62))))
+                        .addContainerGap(62, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(239, 239, 239)
+                .addGap(249, 249, 249)
                 .addComponent(lblerrorMessage)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -254,36 +246,56 @@ public class NewClient extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
-                        .addGap(11, 11, 11)
-                        .addComponent(lblnewPass)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel10)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel2)
+                            .addComponent(txtfirstname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtlastname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(dateChooserCombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblnewPass))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(txtpasswordconfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblconfirmPass)
+                    .addComponent(lblerrorMessage1))
+                .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(46, 46, 46))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel8)
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel11))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtstreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtstreet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblconfirmPass)))
+                            .addComponent(txthousenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblerrorNumber))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtpostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtcity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(txthousenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblerrorNumber))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtpostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtcity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(lblerrorMessage)
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -313,6 +325,7 @@ public class NewClient extends javax.swing.JDialog {
          boolean seq3= false;
          boolean seq4= false;
          boolean seq5= false;
+         boolean seq6 = false;
          String email="";
          String street="";
          int housenumber=0;
@@ -321,17 +334,19 @@ public class NewClient extends javax.swing.JDialog {
          String username = "";
          Date dob = new Date() ;
          String password = "";
+         
+//FIRSTNAME AND LASTNAME         
       String firstname =  txtfirstname.getText();
        String lastname = txtlastname.getText();
        if( firstname.equals("") || lastname.equals("")){
-           lblerrorMessage.setText("Please fill First name and last name");
+           lblerrorMessage1.setText("Please fill First name and last name");
            seq1 = false;
        }else{
            seq1 = true;
-           lblerrorMessage.setText("");
+           lblerrorMessage1.setText("");
             email = txtemail.getText();
             street = txtstreet.getText();
-           
+//HOUSE NUMBER          
            if(!txthousenumber.getText().equals("")){
                try{
              housenumber = Integer.parseInt(txthousenumber.getText());
@@ -343,13 +358,25 @@ public class NewClient extends javax.swing.JDialog {
                }
                
            }
-               
+//HOUSE NUMBER               
            postcode =  txtpostcode.getText();
            city = txtcity.getText();
-          
+//DATE
            dob = dateChooserCombo1.getSelectedDate().getTime();
-       
-           if(email.equals("") ||email.length()<9 || street.equals("") || (housenumber < 1)  || postcode.equals("") || city.equals("")){
+           String date = new SimpleDateFormat("yyyy").format(dob);
+           int date1= Integer.parseInt(date);
+           int date2= Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date()));           
+           if(date2-date1<15){
+           lblerrorMessage1.setText("Client must be older than 15 years to create");
+           seq6=false;
+           }else{
+               lblerrorMessage1.setText("");
+               seq6=true;
+           }
+//DATE
+           
+           if(email.equals("") ||email.length()<9 || street.equals("") || 
+                   (housenumber < 1)  || postcode.equals("") || city.equals("")){
                lblerrorMessage.setText("Please fill or edit contact details of client");
            seq2 = false;
            }
@@ -412,7 +439,7 @@ public class NewClient extends javax.swing.JDialog {
         }
            
           
-      if(seq1&&seq2&&seq3&&seq4&&seq5){
+      if(seq1&&seq2&&seq3&&seq4&&seq5&&seq6){
             
             Client client = new Client(0, firstname,lastname, email, street, housenumber, postcode, city, username,false, false,dob);
              try {
@@ -429,7 +456,7 @@ public class NewClient extends javax.swing.JDialog {
              
             
         }    
-  
+ 
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -449,14 +476,18 @@ public class NewClient extends javax.swing.JDialog {
         Random rand = new Random();
 
         for (char i = 0; i <= 3; i++) {
-            password += (char) (rand.nextInt(('a' - 'z') + 1) + 'a');
+            password += (char) (rand.nextInt(( 122 -97) + 1) + 97);
+            
         }
          for (char i = 0; i <= 3; i++) {
-            password += (char) (rand.nextInt(('A' - 'Z') + 1) + 'A');
+            password += (char) (rand.nextInt((90-65) + 1) + 65);
+             
         }
           for (char i = 0; i <= 3; i++) {
-            password += (char) (rand.nextInt(('0' - '9') + 1) + '0');
+            password += (char) (rand.nextInt(( 57 -48) + 1) + 48);
+             
         }
+           
         return password;
     }
 
@@ -479,6 +510,7 @@ public class NewClient extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblconfirmPass;
     private javax.swing.JLabel lblerrorMessage;
+    private javax.swing.JLabel lblerrorMessage1;
     private javax.swing.JLabel lblerrorNumber;
     private javax.swing.JLabel lblerrormesusername;
     private javax.swing.JLabel lblnewPass;
