@@ -10,6 +10,10 @@ public class Account {
         private int idc;
         private float balance;
 
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
+
     public long getIdacc() {
         return idacc;
     }

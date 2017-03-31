@@ -6,11 +6,9 @@
 package ui;
 
 import glbank.database.ConnectionProvider;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
+
 
 /**
  *

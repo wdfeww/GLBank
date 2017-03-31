@@ -5,21 +5,36 @@
  */
 package ui.panels;
 
+import glbank.Account;
+import glbank.Client;
+import glbank.database.ConnectionProvider;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Client
  */
 public class PanelAccounts extends javax.swing.JPanel {
-private int idc;
+
+    private int idc;
+    int index;
+    private List<Account> list;
 
     /**
      * Creates new form Acounts
      */
-    public PanelAccounts(int idc) {
+    public PanelAccounts(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         this.idc = idc;
         initComponents();
         initAcountList();
+        lblBalanceAmount.setText("");
+        jLabel4.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +53,8 @@ private int idc;
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,10 +79,29 @@ private int idc;
         jTextField2.setText("0");
 
         jButton1.setText("Add +");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Sub -");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Cash transaction:");
+
+        jButton3.setText("Add new account");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("jLabel4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -74,29 +110,36 @@ private int idc;
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblBalanceAmount)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel2)))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addComponent(jLabel3)))
-                        .addGap(129, 129, 129))))
+                                .addComponent(lblBalanceAmount)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(45, 45, 45)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(62, 62, 62)
+                                        .addComponent(jLabel3)))
+                                .addGap(129, 129, 129))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,31 +164,149 @@ private int idc;
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
                         .addComponent(lblBalanceAmount)))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(28, 28, 28)
+                .addComponent(jButton3)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        index = jComboBox1.getSelectedIndex();
+
+        if (index > 0) {
+            lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
+
+        } else {
+            lblBalanceAmount.setText("");
+        }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+          
+        try {
+            ConnectionProvider connection = new ConnectionProvider();
+            Account account = new Account(generateAcc(), idc, 0);
+            if (!connection.existsAccount(account)) {
+                connection.addNewAccount(account);
+                initAcountList();
+                
+            }
+        } catch (ClassNotFoundException ex) {
+            
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private long generateAcc() {
+        String generatedIdacc = "";
+        long idacc;
+        do {
+            for (int i = 0; i < 10; i++) {
+                Random ran = new Random();
+                int x = ran.nextInt(9) + 1;
+                generatedIdacc += x;
+            }
+            idacc = Long.parseLong(generatedIdacc);
+        } while (idacc % 11 == 0);
+        return idacc;
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        try {
+            if (index > 0) {
+                float number = Float.parseFloat(jTextField1.getText());
+                (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) + number);
+                jTextField1.setText("0");
+                new ConnectionProvider().updateAccount(list.get(index - 1));
+
+                lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
+
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NumberFormatException ex) {
+            System.out.println("Error: " + ex.toString());
+            jTextField2.setText("0");
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        try {
+            if (index > 0) {
+                float number = Float.parseFloat(jTextField2.getText());
+                (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) - number);
+                jTextField2.setText("0");
+                new ConnectionProvider().updateAccount(list.get(index - 1));
+
+                lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
+
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NumberFormatException ex) {
+            System.out.println("Error: " + ex.toString());
+            jTextField2.setText("0");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblBalanceAmount;
     // End of variables declaration//GEN-END:variables
 
-    private void initAcountList() {
-        
+    private void initAcountList() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        list = new ConnectionProvider().getAccounts(idc);
+        if (list == null) {
+            return;
+        } else {
+            jComboBox1.removeAllItems();
+            jComboBox1.addItem("Choose:");
+            if (list != null && list.size() > 0) {
+                for (Account account : list) {
+                    String item = "" + account.getIdacc();
+                    jComboBox1.addItem(item + " / 2701");
+                }
+            }
+        }
     }
 }

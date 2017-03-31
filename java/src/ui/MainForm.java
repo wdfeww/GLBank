@@ -13,6 +13,7 @@ import glbank.Employee;
 import glbank.database.ConnectionProvider;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -207,22 +208,25 @@ public class MainForm extends javax.swing.JFrame {
             try {
                 int idc = client.getIdc();
                 panelinfo = new PanelInfo(idc);
-
+            jTabbedPane1.add("Information", panelinfo);
+            PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc());
+            PanelTransaction jPanelTransaction = new PanelTransaction();
+            PanelCards jPanelCards = new PanelCards();
+            jTabbedPane1.add("Accounts", jPanelAccounts);
+            jTabbedPane1.add("Transactions", jPanelTransaction);
+            jTabbedPane1.add("Cards", jPanelCards);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InstantiationException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-            jTabbedPane1.add("Information", panelinfo);
-            PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc());
-            PanelTransaction jPanelTransaction = new PanelTransaction();
-            PanelCards jPanelCards = new PanelCards();
             
-            jTabbedPane1.add("Accounts", jPanelAccounts);
-            jTabbedPane1.add("Transactions", jPanelTransaction);
-            jTabbedPane1.add("Cards", jPanelCards);
+            
+            
         }
     }//GEN-LAST:event_comboListOfAllClientsActionPerformed
 

@@ -64,13 +64,12 @@ public class ConnectionProvider {
                 ps.setString(2, password);
                 ResultSet rs = ps.executeQuery();
                 ret = rs.next();
-                System.out.println(idemp + " " + password);
                 conn.close();
             } catch (SQLException ex) {
                 System.out.println("Error: " + ex.toString());
             }
         }
-        System.out.println(ret);
+        
         return ret;
     }
 
@@ -257,7 +256,7 @@ public class ConnectionProvider {
                  ps.setInt(1, client.getIdc() );
                   ps.setString(2, client.getUsername());
                    ps.setString(3, password );
-                       ps.execute();
+                       ps.executeUpdate();
             }catch (SQLException ex) {
             System.out.println("Error: 'insertClientLogin' :" + ex.toString());
         }
@@ -301,9 +300,7 @@ public class ConnectionProvider {
         
         
         return client;
-    }
-    
-    
+    } 
     
     public List<Account> getAccounts(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         List<Account> accounts = new ArrayList<>();
@@ -314,24 +311,69 @@ public class ConnectionProvider {
                  PreparedStatement ps = conn.prepareStatement(query);
                  ps.setInt(1, idc );
                  ResultSet rs  = ps.executeQuery();
+                 if(conn!=null)
                        while(rs.next()){
                        Account account = new Account(rs.getLong("idacc"), idc, rs.getFloat("balance"));
                        accounts.add(account);
                        }
                        conn.close();
                 }
-                
-            
-
          catch (SQLException ex) {
             System.out.println("Error: " + ex.toString());
         }
         return accounts;
     }
     
+    public void updateAccount(Account account)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+        
+        String query = "UPDATE Accounts SET balance = ? WHERE idacc = ?";
+        
+        Connection conn = getConnection();
+        try{
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setFloat(1, account.getBalance() );
+            ps.setLong(2, account.getIdacc());
+            ps.executeUpdate();
+            conn.close();
+            }
+         catch (SQLException ex) {
+            System.out.println("Error: " + ex.toString());
+        }
+    }
     
+    public void addNewAccount(Account account) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+        String query = "INSERT INTO Accounts(idacc,idc,balance) VALUE ( ? , ? , ?)";
+        Connection conn = getConnection();
+        try{
+                PreparedStatement ps = conn.prepareStatement(query);
+                 ps.setLong(1, account.getIdacc() );
+                  ps.setInt(2, account.getIdc());
+                   ps.setFloat(3, account.getBalance());
+                       ps.executeUpdate();
+            }catch (SQLException ex) {
+            System.out.println("Error: 'addNewAccount' :" + ex.toString());
+        }
     
+    }
     
+    public boolean existsAccount(Account account) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    boolean exist = false;
+        String query = "SELECT * FROM Accounts WHERE idacc = ? ";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setLong(1, account.getIdacc());
+                ResultSet rs = ps.executeQuery();
+                exist = rs.next();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+        
+        return exist;
+    }
     
     
     
