@@ -3,6 +3,7 @@ package glbank.database;
 import glbank.Account;
 import glbank.Client;
 import glbank.Employee;
+import glbank.Transaction;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -389,40 +390,60 @@ public class ConnectionProvider {
     
     
     
-    public void updateAccount(Account account){
+    public void updateCashTransactions(Account account,int idemp ,char mark, float amount) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         try{
-            Connection conn = new Connection();
-            
+           Connection conn = getConnection();
+            try{
+                conn.setAutoCommit(false);
+                updateAccountBalance(account, conn);
+                writeLogTransaction(conn, idemp,account.getIdacc(),mark , amount);
+                conn.commit();
+            conn.close();
+            }catch(SQLException ex){
+                conn.rollback();
+            }
         }catch(SQLException ex){
-            
+             System.out.println("Error: 'updateAccount' :" + ex.toString());
         }
             
     }
     
-     public void updateAccountBalance(Account account)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+     public void updateAccountBalance(Account account, Connection conn)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         
         String query = "UPDATE Accounts SET balance = ? WHERE idacc = ?";
         
-        Connection conn = getConnection();
         try{
-            conn.setAutoCommit(false);
+            
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setFloat(1, account.getBalance() );
             ps.setLong(2, account.getIdacc());
             ps.executeUpdate();
-            conn.commit();
-            conn.close();
+            
             }
          catch (SQLException ex) {
-             conn.rollback();
-            System.out.println("Error: " + ex.toString());
+            System.out.println("Error: 'updateAccountBalance' " + ex.toString());
         }
     }
     
     
     
-    public void writeLogTransaction(){
+    public void writeLogTransaction(Connection conn, int idemp,long idacc, char mark, float amount){
+         String query = "INSERT INTO CashTransactions(idemp,amount,idacc,cashdatetime) VALUE (?,?,?,NOW())";
         
+        try{
+                PreparedStatement ps = conn.prepareStatement(query);
+                
+                   ps.setInt(1, idemp);
+                   if(mark=='-')
+                       ps.setFloat(2, Float.parseFloat("-"+amount));
+                   else
+                       ps.setFloat(2, Float.parseFloat("+"+amount));
+                   ps.setLong(3, idacc);
+                       ps.execute();
+            }catch (SQLException ex) {
+            System.out.println("Error: 'writeLogTransaction' :" + ex.toString());
+        }
+    
     }
     
     

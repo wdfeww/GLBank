@@ -209,7 +209,7 @@ public class MainForm extends javax.swing.JFrame {
                 int idc = client.getIdc();
                 panelinfo = new PanelInfo(idc);
             jTabbedPane1.add("Information", panelinfo);
-            PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc());
+            PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc(), idemp);
             PanelTransaction jPanelTransaction = new PanelTransaction();
             PanelCards jPanelCards = new PanelCards();
             jTabbedPane1.add("Accounts", jPanelAccounts);

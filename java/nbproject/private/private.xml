@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/glbank/Main.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/ui/panels/PanelInfo.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/ui/EditClient.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/ui/panels/PanelAccounts.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/ui/MainForm.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/ui/IbanCalculator.java</file>
-            <file>file:/C:/Users/Client/Documents/BitBucket/wdfeww/GLBank/src/glbank/database/ConnectionProvider.java</file>
+            <file>file:/Users/wdfeww/Desktop/debug/java/src/glbank/Transaction.java</file>
+            <file>file:/Users/wdfeww/Desktop/debug/java/src/ui/MainForm.java</file>
+            <file>file:/Users/wdfeww/Desktop/debug/java/src/glbank/database/ConnectionProvider.java</file>
+            <file>file:/Users/wdfeww/Desktop/debug/java/src/ui/panels/PanelAccounts.java</file>
         </group>
     </open-files>
 </project-private>

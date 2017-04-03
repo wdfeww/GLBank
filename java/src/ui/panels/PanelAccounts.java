@@ -6,6 +6,7 @@
 package ui.panels;
 
 import glbank.Account;
+import glbank.Transaction;
 import glbank.database.ConnectionProvider;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,16 +25,20 @@ public class PanelAccounts extends javax.swing.JPanel {
     private int idc;
     int index;
     private List<Account> list;
+    Transaction trans;
+    private int idemp;
 
     /**
      * Creates new form Acounts
      */
-    public PanelAccounts(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public PanelAccounts(int idc, int idemp) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         this.idc = idc;
+        this.idemp=idemp;
         initComponents();
         initAcountList();
         lblBalanceAmount.setText("");
         jLabel4.setText("");
+        
     }
 
     /**
@@ -239,7 +244,7 @@ public class PanelAccounts extends javax.swing.JPanel {
                     if(number>0.1){
                 (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) + number);
                 jTextField1.setText("0");
-                new ConnectionProvider().updateAccount(list.get(index - 1));
+                new ConnectionProvider().updateCashTransactions(list.get(index - 1), idemp, '+', number);
 
                 lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
                 JOptionPane.showMessageDialog(null, number+" EUR was added to "+list.get(index - 1).getIdacc()+"/2701" , "" , JOptionPane.INFORMATION_MESSAGE);
@@ -270,8 +275,8 @@ public class PanelAccounts extends javax.swing.JPanel {
                     if(number>0.1){
                 (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) - number);
                 jTextField2.setText("0");
-                new ConnectionProvider().updateAccount(list.get(index - 1));
-
+                new ConnectionProvider().updateCashTransactions(list.get(index - 1), idemp, '-', number);
+                
                 lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
                 JOptionPane.showMessageDialog(null, number+"EUR was deducted from "+list.get(index - 1).getIdacc()+"/2701" , "" , JOptionPane.INFORMATION_MESSAGE);
                     }else
