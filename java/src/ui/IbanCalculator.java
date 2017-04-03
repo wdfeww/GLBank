@@ -8,6 +8,8 @@ package ui;
 import org.iban4j.CountryCode;
 import org.iban4j.Iban;
 
+
+
 /**
  *
  * @author Client
@@ -156,7 +158,7 @@ public class IbanCalculator extends javax.swing.JDialog {
 
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
       
-        
+      
         
         Iban iban = new Iban.Builder()
                        .countryCode(CountryCode.SK)
@@ -165,6 +167,8 @@ public class IbanCalculator extends javax.swing.JDialog {
                         .build();
         
         txtIBAN.setText(iban.toFormattedString());
+        
+         
     }//GEN-LAST:event_btnConvertActionPerformed
 
     private void txtPrefixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrefixActionPerformed

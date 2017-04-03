@@ -127,15 +127,39 @@ INSERT INTO Accounts VALUES(3804855395,1,75433.23);
 INSERT INTO Accounts VALUES(1612136537,2,131231.54);
 
 
-/*
-CREATE TABLE  Transactions (
-	idtran INTEGER UNIQUE,
-	datetimetran DATE NOT NULL,
-    idacc BIGINT UNIQUE,
-    tranacc BIGINT UNIQUE,
-    
-    PRIMARY KEY (idtran),
-    FOREIGN KEY (idc)
-     REFERENCES Clients (idc)
-     ON DELETE CASCADE ON UPDATE RESTRICT
-);*/
+
+CREATE TABLE BankTransactions (
+	idbt  INTEGER UNIQUE AUTO_INCREMENT,
+    amount FLOAT(10,2) NOT NULL,
+	transdatetime DATETIME NOT NULL,
+    description VARCHAR(140),
+    idemp INTEGER DEFAULT 0,
+    srcacc BIGINT NOT NULL,
+    destacc BIGINT NOT NULL,
+    srcbank INT NOT NULL,
+    destbank INT NOT NULL,    
+    PRIMARY KEY (idbt),
+    FOREIGN KEY (idemp)
+     REFERENCES  Employees(idemp)
+     );
+     
+ CREATE TABLE CashTransactions (
+	idct  INTEGER UNIQUE AUTO_INCREMENT,
+    idemp INTEGER NOT NULL,
+    amount FLOAT(10,2) NOT NULL,
+    idacc BIGINT NOT NULL,
+	cashdatetime DATETIME NOT NULL,
+    PRIMARY KEY (idct),
+    FOREIGN KEY (idemp)
+     REFERENCES  Employees(idemp)
+     ON DELETE RESTRICT ON UPDATE RESTRICT
+     );  
+     
+	/* CREATE TABLE ATMWithdrawals (
+	idatmw  INTEGER UNIQUE AUTO_INCREMENT,
+    idcard INTEGER NOT NULL,
+    amount FLOAT(10,2) NOT NULL,
+    idatm INT NOT NULL,
+	cashdatetime DATETIME NOT NULL,
+    PRIMARY KEY (idatmw)
+     );*/

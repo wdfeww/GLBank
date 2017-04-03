@@ -324,22 +324,7 @@ public class ConnectionProvider {
         return accounts;
     }
     
-    public void updateAccount(Account account)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
-        
-        String query = "UPDATE Accounts SET balance = ? WHERE idacc = ?";
-        
-        Connection conn = getConnection();
-        try{
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setFloat(1, account.getBalance() );
-            ps.setLong(2, account.getIdacc());
-            ps.executeUpdate();
-            conn.close();
-            }
-         catch (SQLException ex) {
-            System.out.println("Error: " + ex.toString());
-        }
-    }
+   
     
     public void addNewAccount(Account account) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         String query = "INSERT INTO Accounts(idacc,idc,balance) VALUE ( ? , ? , ?)";
@@ -375,13 +360,70 @@ public class ConnectionProvider {
         return exist;
     }
     
+    public void editClient(Client client) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+        String query = "UPDATE Clients SET firstname = ?, lastname = ? WHERE idc = ?";
+        String query1 = "UPDATE ClientDetails SET street = ?, housenumber = ?, postcode = ?, city = ?, dob = ?, email = ? WHERE idc = ?";
+        Connection conn = getConnection();
+        try{
+            
+                PreparedStatement ps = conn.prepareStatement(query);
+                 ps.setString(1, client.getFirstname() );
+                  ps.setString(2, client.getLastname());
+                   ps.setInt(3, client.getIdc());
+                       ps.execute();
+                 PreparedStatement ps1 = conn.prepareStatement(query1);
+                 ps1.setString(1, client.getStreet() );
+                  ps1.setInt(2, client.getHousenumber());
+                   ps1.setString(3, client.getPostcode());
+                    ps1.setString(4, client.getCity());
+                     ps1.setString(5, new SimpleDateFormat("yyyy-MM-dd").format(client.getDob()));
+                      ps1.setString(6, client.getEmail());
+                       ps1.setInt(7, client.getIdc());
+                       ps1.execute();
+                       conn.close();
+            }catch (SQLException ex) {
+            System.out.println("Error: 'editClient' :" + ex.toString());
+        }
+    
+    }
     
     
     
+    public void updateAccount(Account account){
+        try{
+            Connection conn = new Connection();
+            
+        }catch(SQLException ex){
+            
+        }
+            
+    }
+    
+     public void updateAccountBalance(Account account)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+        
+        String query = "UPDATE Accounts SET balance = ? WHERE idacc = ?";
+        
+        Connection conn = getConnection();
+        try{
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setFloat(1, account.getBalance() );
+            ps.setLong(2, account.getIdacc());
+            ps.executeUpdate();
+            conn.commit();
+            conn.close();
+            }
+         catch (SQLException ex) {
+             conn.rollback();
+            System.out.println("Error: " + ex.toString());
+        }
+    }
     
     
     
-    
+    public void writeLogTransaction(){
+        
+    }
     
     
     /*

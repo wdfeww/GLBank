@@ -98,4 +98,49 @@ public class Client {
     public Date getDob() {
         return dob;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setHousenumber(int housenumber) {
+        this.housenumber = housenumber;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDisable(boolean disable) {
+        this.disable = disable;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+    
 }

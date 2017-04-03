@@ -7,7 +7,14 @@ package ui.panels;
 
 import glbank.Client;
 import glbank.database.ConnectionProvider;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import ui.EditClient;
+import ui.MainForm;
 
 /**
  *
@@ -16,7 +23,7 @@ import java.text.SimpleDateFormat;
 public class PanelInfo extends javax.swing.JPanel {
 
     private int idc;
-
+    private Client client;
     /**
      * Creates new form jPanelInfo
      */
@@ -53,6 +60,7 @@ public class PanelInfo extends javax.swing.JPanel {
         lblCity = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
+        btnEdit = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(900, 400));
         setRequestFocusEnabled(false);
@@ -111,6 +119,13 @@ public class PanelInfo extends javax.swing.JPanel {
         lblEmail.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lblEmail.setText("jLabel10");
 
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,7 +158,8 @@ public class PanelInfo extends javax.swing.JPanel {
                             .addComponent(lblHouseNumber)
                             .addComponent(lblPostcode)
                             .addComponent(lblCity)
-                            .addComponent(lblEmail))))
+                            .addComponent(lblEmail)))
+                    .addComponent(btnEdit))
                 .addContainerGap(699, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -185,12 +201,48 @@ public class PanelInfo extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblEmail))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnEdit)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+ private void setInfo() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        ConnectionProvider connection = new ConnectionProvider();
+        client = connection.getClientById(idc);
+        lblId.setText( "" + client.getIdc() );
+        lblFirstName.setText(client.getFirstname());
+        lblLastName.setText(client.getLastname());
+        lblEmail.setText(client.getEmail());
+        lblStreet.setText(client.getStreet());
+        lblHouseNumber.setText("" + client.getHousenumber());
+        lblPostcode.setText(client.getPostcode());
+        lblCity.setText(client.getCity());
+        lblDob.setText(new SimpleDateFormat("yyyy-MM-dd").format(client.getDob()));
+    }   
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        EditClient ec = new EditClient((JFrame) this.getRootPane().getParent(),true,client);
+                 ec.setLocationRelativeTo(null);
+                 
+                 ec.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                try {
+                    setInfo();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(PanelInfo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(PanelInfo.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(PanelInfo.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+                 ec.setVisible(true);
+    }//GEN-LAST:event_btnEditActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEdit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -211,17 +263,5 @@ public class PanelInfo extends javax.swing.JPanel {
     private javax.swing.JLabel lblStreet;
     // End of variables declaration//GEN-END:variables
 
-    private void setInfo() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        ConnectionProvider connection = new ConnectionProvider();
-        Client client = connection.getClientById(idc);
-        lblId.setText("" + client.getIdc());
-        lblFirstName.setText(client.getFirstname());
-        lblLastName.setText(client.getLastname());
-        lblEmail.setText(client.getEmail());
-        lblStreet.setText(client.getStreet());
-        lblHouseNumber.setText("" + client.getHousenumber());
-        lblPostcode.setText(client.getPostcode());
-        lblCity.setText(client.getCity());
-        lblDob.setText(new SimpleDateFormat("yyyy-MM-dd").format(client.getDob()));
-    }
+   
 }

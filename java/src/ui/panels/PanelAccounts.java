@@ -6,13 +6,14 @@
 package ui.panels;
 
 import glbank.Account;
-import glbank.Client;
 import glbank.database.ConnectionProvider;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -195,7 +196,10 @@ public class PanelAccounts extends javax.swing.JPanel {
             if (!connection.existsAccount(account)) {
                 connection.addNewAccount(account);
                 initAcountList();
-                
+              /*  AddAccountBox aab = new AddAccountBox((JFrame) this.getRootPane().getParent(),true);
+                 aab.setLocationRelativeTo(null);
+                 aab.setVisible(true);*/
+              JOptionPane.showMessageDialog(null, "Account '"+String.valueOf(account.getIdacc())+"/2701"+"' was successfully created!" , "Creating account " , JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (ClassNotFoundException ex) {
             
@@ -232,13 +236,16 @@ public class PanelAccounts extends javax.swing.JPanel {
         try {
             if (index > 0) {
                 float number = Float.parseFloat(jTextField1.getText());
+                    if(number>0.1){
                 (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) + number);
                 jTextField1.setText("0");
                 new ConnectionProvider().updateAccount(list.get(index - 1));
 
                 lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
-
-            }
+                JOptionPane.showMessageDialog(null, number+" EUR was added to "+list.get(index - 1).getIdacc()+"/2701" , "" , JOptionPane.INFORMATION_MESSAGE);
+            }else
+                        JOptionPane.showMessageDialog(null, " must by greater than 0.10 EUR" , "" , JOptionPane.INFORMATION_MESSAGE);
+                    }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -249,7 +256,8 @@ public class PanelAccounts extends javax.swing.JPanel {
             Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NumberFormatException ex) {
             System.out.println("Error: " + ex.toString());
-            jTextField2.setText("0");
+            jTextField1.setText("0");
+            JOptionPane.showMessageDialog(null, "Input is not number!" , "" , JOptionPane.INFORMATION_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -259,13 +267,17 @@ public class PanelAccounts extends javax.swing.JPanel {
         try {
             if (index > 0) {
                 float number = Float.parseFloat(jTextField2.getText());
+                    if(number>0.1){
                 (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) - number);
                 jTextField2.setText("0");
                 new ConnectionProvider().updateAccount(list.get(index - 1));
 
                 lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
-
-            }
+                JOptionPane.showMessageDialog(null, number+"EUR was deducted from "+list.get(index - 1).getIdacc()+"/2701" , "" , JOptionPane.INFORMATION_MESSAGE);
+                    }else
+                        JOptionPane.showMessageDialog(null, " must by greater than 0.10 EUR" , "" , JOptionPane.INFORMATION_MESSAGE);
+                        
+                        }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -277,6 +289,7 @@ public class PanelAccounts extends javax.swing.JPanel {
         } catch (NumberFormatException ex) {
             System.out.println("Error: " + ex.toString());
             jTextField2.setText("0");
+            JOptionPane.showMessageDialog(null, "Input is not number!" , "" , JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
