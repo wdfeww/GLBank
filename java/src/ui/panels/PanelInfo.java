@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import ui.EditClient;
-import ui.MainForm;
+
 
 /**
  *
@@ -31,6 +31,7 @@ public class PanelInfo extends javax.swing.JPanel {
         initComponents();
         this.idc = idc;
         setInfo();
+        
     }
 
     /**
@@ -228,6 +229,7 @@ public class PanelInfo extends javax.swing.JPanel {
             public void windowClosed(WindowEvent e) {
                 try {
                     setInfo();
+                   
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(PanelInfo.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InstantiationException ex) {

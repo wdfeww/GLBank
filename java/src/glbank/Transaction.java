@@ -13,12 +13,12 @@ public class Transaction {
     private float amount;
     private String description;
     private int idemp;
-    private long srcacc;
+    private Account srcacc;
     private long destacc;
     private int srcbank;
     private int destbank;
 
-    public Transaction(float amount, String description, int idemp, long srcacc, long destacc, int srcbank, int destbank) {
+    public Transaction(float amount, String description, int idemp, Account srcacc, long destacc, int srcbank, int destbank) {
         this.amount = amount;
         this.description = description;
         this.idemp = idemp;
@@ -40,7 +40,7 @@ public class Transaction {
         return idemp;
     }
 
-    public long getSrcacc() {
+    public Account getSrcacc() {
         return srcacc;
     }
 

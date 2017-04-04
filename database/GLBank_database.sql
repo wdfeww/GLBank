@@ -155,11 +155,26 @@ CREATE TABLE BankTransactions (
      ON DELETE RESTRICT ON UPDATE RESTRICT
      );  
      
-	/* CREATE TABLE ATMWithdrawals (
-	idatmw  INTEGER UNIQUE AUTO_INCREMENT,
-    idcard INTEGER NOT NULL,
-    amount FLOAT(10,2) NOT NULL,
-    idatm INT NOT NULL,
-	cashdatetime DATETIME NOT NULL,
-    PRIMARY KEY (idatmw)
-     );*/
+     CREATE TABLE Cards(
+		idcard INTEGER UNIQUE AUTO_INCREMENT,
+        cardnumber BIGINT NOT NULL,
+        idacc BIGINT NOT NULL,
+        blocked BOOLEAN NOT NULL DEFAULT FALSE,
+        pin INTEGER NOT NULL,
+        PRIMARY KEY (idcard),
+        FOREIGN KEY (idacc)
+		REFERENCES  Accounts(idacc)
+       ON DELETE CASCADE  ON UPDATE RESTRICT
+     );
+     
+	CREATE TABLE ATMWithdrawals (
+		idatmw  INTEGER UNIQUE AUTO_INCREMENT,
+        amount FLOAT(10,2) NOT NULL,
+        idatm INT NOT NULL,
+        atmdatetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		idcard INTEGER NOT NULL,
+        PRIMARY KEY (idatmw),
+        FOREIGN KEY (idcard)
+        REFERENCES  Cards(idcard)
+        ON DELETE CASCADE ON UPDATE RESTRICT
+     );

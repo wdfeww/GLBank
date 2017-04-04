@@ -325,8 +325,6 @@ public class ConnectionProvider {
         return accounts;
     }
     
-   
-    
     public void addNewAccount(Account account) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         String query = "INSERT INTO Accounts(idacc,idc,balance) VALUE ( ? , ? , ?)";
         Connection conn = getConnection();
@@ -388,15 +386,13 @@ public class ConnectionProvider {
     
     }
     
-    
-    
     public void updateCashTransactions(Account account,int idemp ,char mark, float amount) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         try{
            Connection conn = getConnection();
             try{
                 conn.setAutoCommit(false);
                 updateAccountBalance(account, conn);
-                writeLogTransaction(conn, idemp,account.getIdacc(),mark , amount);
+                writeLogCashTransaction(conn, idemp,account.getIdacc(),mark , amount);
                 conn.commit();
             conn.close();
             }catch(SQLException ex){
@@ -408,7 +404,7 @@ public class ConnectionProvider {
             
     }
     
-     public void updateAccountBalance(Account account, Connection conn)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    public void updateAccountBalance(Account account, Connection conn)throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
         
         String query = "UPDATE Accounts SET balance = ? WHERE idacc = ?";
         
@@ -425,9 +421,7 @@ public class ConnectionProvider {
         }
     }
     
-    
-    
-    public void writeLogTransaction(Connection conn, int idemp,long idacc, char mark, float amount){
+    public void writeLogCashTransaction(Connection conn, int idemp,long idacc, char mark, float amount){
          String query = "INSERT INTO CashTransactions(idemp,amount,idacc,cashdatetime) VALUE (?,?,?,NOW())";
         
         try{
@@ -446,30 +440,64 @@ public class ConnectionProvider {
     
     }
     
-    
-    /*
-     public Client getClient(int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Client client = null;
-        String query = "SELECT * FROM Clients inner join WHERE idc = ?";
+    public float getBalance(long idacc) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+        float balance = 0;
+        String query = "SELECT balance FROM Accounts WHERE idacc = ?";
         Connection conn = getConnection();
         if (conn != null) {
             try {
                 PreparedStatement ps = conn.prepareStatement(query);
-                ps.setInt(1, idc);
-
+                ps.setLong(1, idacc);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    employee = new Employee(idemp, rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), (rs.getString("position")).charAt(0));
-                    
+                    balance = rs.getFloat("balance");
                 }
-
                 conn.close();
             } catch (SQLException ex) {
                 System.out.println("Error: " + ex.toString());
             }
         }
-        return employee;
-    }*/
+        return balance;
+    }
+    
+   
+    public void updateBankTransactions(Transaction trans) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+         try{
+           Connection conn = getConnection();
+            try{
+                conn.setAutoCommit(false);
+                updateAccountBalance(trans.getSrcacc(), conn);
+                if(trans.getDestbank()==2701)
+                updateAccountBalance(new Account(trans.getDestacc(),0,(getBalance(trans.getDestacc())+(trans.getAmount()))), conn);
+                writeLogBankTransaction(conn, trans);
+                conn.commit();
+            conn.close();
+            }catch(SQLException ex){
+                conn.rollback();
+            }
+        }catch(SQLException ex){
+             System.out.println("Error: 'updateAccount' :" + ex.toString());
+        }
+    }
+
+    private void writeLogBankTransaction(Connection conn, Transaction trans) {
+       String query = "INSERT INTO BankTransactions(amount,transdatetime,idemp,srcacc,destacc,srcbank,destbank) VALUE (?,NOW(),?,?,?,?,?)";
+        
+        try{
+                PreparedStatement ps = conn.prepareStatement(query);
+                
+                   ps.setFloat(1, trans.getAmount());
+                   ps.setInt(2, trans.getIdemp());
+                   ps.setLong(3, trans.getSrcacc().getIdacc());
+                   ps.setLong(4, trans.getDestacc());
+                   ps.setInt(5, 2701);
+                   ps.setInt(6, trans.getDestbank());
+                   
+                       ps.execute();
+            }catch (SQLException ex) {
+            System.out.println("Error: 'writeLogTransaction' :" + ex.toString());
+        }
+    }
     
     
     

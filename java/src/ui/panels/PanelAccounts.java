@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author Client
  */
-public class PanelAccounts extends javax.swing.JPanel {
+public class PanelAccounts extends javax.swing.JPanel  {
 
     private int idc;
     int index;
@@ -182,7 +182,15 @@ public class PanelAccounts extends javax.swing.JPanel {
         index = jComboBox1.getSelectedIndex();
 
         if (index > 0) {
-            lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
+            try {
+                lblBalanceAmount.setText(new ConnectionProvider().getBalance(list.get(index - 1).getIdacc()) + " EUR");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         } else {
             lblBalanceAmount.setText("");
@@ -273,12 +281,14 @@ public class PanelAccounts extends javax.swing.JPanel {
             if (index > 0) {
                 float number = Float.parseFloat(jTextField2.getText());
                     if(number>0.1){
+                        if(new ConnectionProvider().getBalance((list.get(index - 1).getIdacc()))>=number){
                 (list.get(index - 1)).setBalance((list.get(index - 1).getBalance()) - number);
                 jTextField2.setText("0");
                 new ConnectionProvider().updateCashTransactions(list.get(index - 1), idemp, '-', number);
                 
                 lblBalanceAmount.setText("" + list.get(index - 1).getBalance() + " EUR");
                 JOptionPane.showMessageDialog(null, number+"EUR was deducted from "+list.get(index - 1).getIdacc()+"/2701" , "" , JOptionPane.INFORMATION_MESSAGE);
+                        }else{JOptionPane.showMessageDialog(null, " Lack of money in the account!" , "" , JOptionPane.INFORMATION_MESSAGE);}
                     }else
                         JOptionPane.showMessageDialog(null, " must by greater than 0.10 EUR" , "" , JOptionPane.INFORMATION_MESSAGE);
                         
@@ -327,4 +337,6 @@ public class PanelAccounts extends javax.swing.JPanel {
             }
         }
     }
+    
+   
 }

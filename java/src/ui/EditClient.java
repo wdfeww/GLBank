@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ui.MainForm;
 
 /**
  *
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
  */
 public class EditClient extends javax.swing.JDialog {
      Client client;
+     int idemp;
     /**
      * Creates new form EditClient
      */
@@ -192,17 +194,10 @@ public class EditClient extends javax.swing.JDialog {
              client.setCity(txtCity.getText());   
              client.setEmail(txtEmail.getText());
              client.setDob(comboDate.getSelectedDate().getTime());
-             /*
-                      txtFirstName.setText(String.valueOf(client.getFirstname()));
-        txtLastName.setText(String.valueOf(client.getLastname()));
-        txtDob.setText(String.valueOf(client.getDob()));
-        txtStreet.setText(String.valueOf(client.getStreet()));
-        txtHouseNum.setText(String.valueOf(client.getHousenumber()));
-        txtPostCode.setText(String.valueOf(client.getPostcode()));
-        txtCity.setText(String.valueOf(client.getCity()));
-        txtEmail.setText(String.valueOf(client.getEmail()));
-                     */
+             
              new ConnectionProvider().editClient(client);
+             
+            
              this.dispose();
          } catch (ClassNotFoundException ex) {
              Logger.getLogger(EditClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,17 +243,12 @@ public class EditClient extends javax.swing.JDialog {
         txtId.setText(String.valueOf(client.getIdc()));
         txtFirstName.setText(String.valueOf(client.getFirstname()));
         txtLastName.setText(String.valueOf(client.getLastname()));
-  
-       
-     
-     
-                Calendar cal = Calendar.getInstance();
-                Date date = client.getDob();
-                cal.setTime(date);
-                comboDate.setSelectedDate(cal);
-      
         
-       
+        Calendar cal = Calendar.getInstance();
+        Date date = client.getDob();
+        cal.setTime(date);
+        comboDate.setSelectedDate(cal);
+        
         txtStreet.setText(String.valueOf(client.getStreet()));
         txtHouseNum.setText(String.valueOf(client.getHousenumber()));
         txtPostCode.setText(String.valueOf(client.getPostcode()));

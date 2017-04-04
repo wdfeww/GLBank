@@ -5,19 +5,48 @@
  */
 package ui.panels;
 
+import glbank.Account;
+import glbank.Transaction;
+import glbank.database.ConnectionProvider;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Client
  */
 public class PanelTransaction extends javax.swing.JPanel {
-
+    private int idemp;
+    private List<Account> list; 
+    private int idc;
+    int index;
     /**
      * Creates new form PanelTransaction
      */
-    public PanelTransaction() {
+    public PanelTransaction(int idemp, int idc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+        this.idemp=idemp;
         initComponents();
+        this.idc=idc;
+        initAcountList();
     }
-
+ private void initAcountList() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        list = new ConnectionProvider().getAccounts(idc);
+        if (list == null) {
+            return;
+        } else {
+            jComboBox1.removeAllItems();
+            jComboBox1.addItem("Choose:");
+            if (list != null && list.size() > 0) {
+                for (Account account : list) {
+                    String item = "" + account.getIdacc();
+                    jComboBox1.addItem(item + " / 2701");
+                }
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,19 +56,142 @@ public class PanelTransaction extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        txtAmount = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtDestAcc = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDestBankCode = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+
+        jLabel1.setText("Source account: ");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose:" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Amount:");
+
+        txtAmount.setText("0");
+        txtAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAmountActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Destination account:");
+
+        jLabel4.setText("Destination bank code:");
+
+        txtDestBankCode.setText("2701");
+
+        jButton1.setText("Send");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 637, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDestBankCode)
+                            .addComponent(jComboBox1, 0, 179, Short.MAX_VALUE)
+                            .addComponent(txtAmount)
+                            .addComponent(txtDestAcc))))
+                .addContainerGap(374, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 323, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDestAcc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtDestBankCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Account srcacc = list.get(index - 1);
+        float amount = Float.parseFloat(txtAmount.getText());
+        long destacc = Long.parseLong(txtDestAcc.getText());
+        int destbank = Integer.parseInt(txtDestBankCode.getText());
+        ConnectionProvider connection = new ConnectionProvider();
+        
+        if(list.get(index - 1).getBalance()>=amount){
+        try {
+            list.get(index - 1).setBalance((list.get(index - 1).getBalance() - amount));
+            Transaction trans = new Transaction(amount,"",idemp,srcacc,destacc,2701,destbank);
+            connection.updateBankTransactions(trans);
+            JOptionPane.showMessageDialog(null, "Trasaction done!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Trasaction error!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Trasaction error!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Trasaction error!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Trasaction error!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        }else
+            JOptionPane.showMessageDialog(null, "Lack of money in the account!!" , "" , JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+       index = jComboBox1.getSelectedIndex();
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void txtAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAmountActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField txtAmount;
+    private javax.swing.JTextField txtDestAcc;
+    private javax.swing.JTextField txtDestBankCode;
     // End of variables declaration//GEN-END:variables
 }
