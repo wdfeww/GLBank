@@ -15,12 +15,18 @@ public class Card {
     private long cardnumber;
     private long idacc;
     private boolean blocked;
+    private int pin;
 
-    public Card(int idcard, long cardnumber, long idacc, boolean blocked) {
+    public Card(int idcard, long cardnumber, long idacc, boolean blocked, int pin) {
         this.idcard = idcard;
         this.cardnumber = cardnumber;
         this.idacc = idacc;
         this.blocked = blocked;
+        this.pin=pin;
+    }
+
+    public int getPin() {
+        return pin;
     }
 
     public int getIdcard() {
@@ -37,6 +43,26 @@ public class Card {
 
     public boolean isBlocked() {
         return blocked;
+    }
+
+    public void setIdcard(int idcard) {
+        this.idcard = idcard;
+    }
+
+    public void setCardnumber(long cardnumber) {
+        this.cardnumber = cardnumber;
+    }
+
+    public void setIdacc(long idacc) {
+        this.idacc = idacc;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public void setPin(int pin) {
+        this.pin = pin;
     }
     
 }

@@ -6,6 +6,7 @@
 package ui.panels;
 
 import glbank.Account;
+import glbank.Card;
 import glbank.Transaction;
 import glbank.database.ConnectionProvider;
 import java.sql.SQLException;
@@ -25,19 +26,18 @@ public class PanelAccounts extends javax.swing.JPanel  {
     private int idc;
     int index;
     private List<Account> list;
+    private List<Card> cards;
     Transaction trans;
     private int idemp;
 
-    /**
-     * Creates new form Acounts
-     */
+  
     public PanelAccounts(int idc, int idemp) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         this.idc = idc;
         this.idemp=idemp;
         initComponents();
         initAcountList();
         lblBalanceAmount.setText("");
-        txtCardNum.setText("");
+        btnCreateCard.setVisible(false);
         
     }
 
@@ -61,7 +61,8 @@ public class PanelAccounts extends javax.swing.JPanel  {
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        txtCardNum = new javax.swing.JLabel();
+        comboCards = new javax.swing.JComboBox<>();
+        btnCreateCard = new javax.swing.JToggleButton();
 
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,8 +111,18 @@ public class PanelAccounts extends javax.swing.JPanel  {
 
         jLabel5.setText("Card number:");
 
-        txtCardNum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        txtCardNum.setText("CardNumber");
+        comboCards.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboCardsActionPerformed(evt);
+            }
+        });
+
+        btnCreateCard.setText("Create card on this account");
+        btnCreateCard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateCardActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -122,7 +133,7 @@ public class PanelAccounts extends javax.swing.JPanel  {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -137,18 +148,20 @@ public class PanelAccounts extends javax.swing.JPanel  {
                                 .addComponent(jLabel3))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblBalanceAmount)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtCardNum)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel2))
+                                    .addGap(32, 32, 32)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblBalanceAmount)
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(comboCards, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnCreateCard))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -176,11 +189,13 @@ public class PanelAccounts extends javax.swing.JPanel  {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(lblBalanceAmount))
-                        .addGap(18, 18, 18)
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(txtCardNum))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 202, Short.MAX_VALUE)
+                            .addComponent(comboCards, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCreateCard)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                         .addComponent(jButton3)))
                 .addContainerGap())
         );
@@ -192,11 +207,36 @@ public class PanelAccounts extends javax.swing.JPanel  {
         if (index > 0) {
             try {
                 lblBalanceAmount.setText(new ConnectionProvider().getBalance(list.get(index - 1).getIdacc()) + " EUR");
+                
+                 cards = new ConnectionProvider().getCards(list.get(index - 1).getIdacc());
+                 
+        if (cards.isEmpty()) {
+            comboCards.removeAllItems();
+            comboCards.addItem("No cards in this account");
+            btnCreateCard.setVisible(true);
+            
+            return;
+        } else {
+             btnCreateCard.setVisible(false);
+            comboCards.removeAllItems();
+            comboCards.addItem("Choose:");
+            if (cards != null && cards.size() > 0) {
+                for (Card card : cards) {
+                    String item = "" + card.getCardnumber();
+                    comboCards.addItem(item);
+                }
+            }
+        }
+                
+                
+               
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InstantiationException ex) {
                 Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
                 Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -238,6 +278,38 @@ public class PanelAccounts extends javax.swing.JPanel  {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+      private long generateCard() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        String generatedCard = "";
+        long cardnumber;
+        
+            for (int i = 0; i < 16; i++) {
+                Random ran = new Random();
+                int x = ran.nextInt(9) + 1;
+                generatedCard += x;
+            }
+            cardnumber = Long.parseLong(generatedCard);
+            if(new ConnectionProvider().existsCard(cardnumber)){
+              return generateCard();
+            }
+            else{
+            return cardnumber;
+            }
+    }
+      
+    private int generatePin() {
+        String generatedPin = "";
+        int pin;
+        do {
+            for (int i = 0; i < 4; i++) {
+                Random ran = new Random();
+                int x = ran.nextInt(9) + 1;
+                generatedPin += x;
+            }
+            pin = Integer.parseInt(generatedPin);
+        } while (pin % 11 == 0);
+        return pin;
+    }
+    
     private long generateAcc() {
         String generatedIdacc = "";
         long idacc;
@@ -316,7 +388,35 @@ public class PanelAccounts extends javax.swing.JPanel  {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btnCreateCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateCardActionPerformed
+        try {
+            new ConnectionProvider().createCard(new Card(0,generateCard(),list.get(index - 1).getIdacc(),false,generatePin()));
+            btnCreateCard.setVisible(false);
+            JOptionPane.showMessageDialog(null, " Card was created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            initAcountList();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnCreateCardActionPerformed
+
+    private void comboCardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCardsActionPerformed
+        
+    }//GEN-LAST:event_comboCardsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnCreateCard;
+    private javax.swing.JComboBox<String> comboCards;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -328,7 +428,6 @@ public class PanelAccounts extends javax.swing.JPanel  {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblBalanceAmount;
-    private javax.swing.JLabel txtCardNum;
     // End of variables declaration//GEN-END:variables
 
     private void initAcountList() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {

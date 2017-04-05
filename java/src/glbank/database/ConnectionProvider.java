@@ -500,16 +500,29 @@ public class ConnectionProvider {
         }
     }
     
+    public void createCard(Card card)  throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+         
+        String query = "INSERT INTO Cards(cardnumber,idacc,blocked,pin) VALUE ( ? , ? , false,?)";
+        Connection conn = getConnection();
+        try{
+                PreparedStatement ps = conn.prepareStatement(query);
+                 ps.setLong(1, card.getCardnumber() );
+                  ps.setLong(2, card.getIdacc());
+                   ps.setInt(3, card.getPin());
+                       ps.executeUpdate();
+            }catch (SQLException ex) {
+            System.out.println("Error: 'createCard' :" + ex.toString());
+        }
+    }
     
-    
-     public boolean existsCard(Card card) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+     public boolean existsCard(long cardnumber) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
     boolean exist = false;
         String query = "SELECT * FROM Cards WHERE cardnumber = ? ";
         Connection conn = getConnection();
         if (conn != null) {
             try {
                 PreparedStatement ps = conn.prepareStatement(query);
-                ps.setLong(1, card.getCardnumber());
+                ps.setLong(1, cardnumber);
                 ResultSet rs = ps.executeQuery();
                 exist = rs.next();
                 conn.close();
@@ -520,7 +533,29 @@ public class ConnectionProvider {
         
         return exist;
     }
-    
+   
+     public List<Card> getCards(long idacc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+          List<Card> cards = new ArrayList<>();
+        String query = "SELECT * FROM Cards"
+                + " WHERE idacc = ?";
+        Connection conn = getConnection();
+        try {
+                 PreparedStatement ps = conn.prepareStatement(query);
+                 ps.setLong(1, idacc );
+                 ResultSet rs  = ps.executeQuery();
+                 if(conn!=null)
+                       while(rs.next()){
+                          // System.out.println("adding to list "+rs.getInt("idcard")+" "+rs.getLong("cardnumber")+" "+ rs.getLong("idacc")+" "+ rs.getBoolean("blocked")+" "+ rs.getInt("pin"));
+                       Card card = new Card(rs.getInt("idcard"),rs.getLong("cardnumber"), rs.getLong("idacc"), rs.getBoolean("blocked"),rs.getInt("pin"));
+                       cards.add(card);
+                       }
+                       conn.close();
+                }
+         catch (SQLException ex) {
+            System.out.println("Error: " + ex.toString());
+        }
+        return cards;
+     }
     
     
 }
