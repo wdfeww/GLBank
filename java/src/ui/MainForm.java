@@ -11,15 +11,13 @@ import ui.panels.PanelTransaction;
 import glbank.Client;
 import glbank.Employee;
 import glbank.database.ConnectionProvider;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ui.panels.PanelCards;
+
 
 /**
  *
@@ -213,10 +211,10 @@ public class MainForm extends javax.swing.JFrame {
             jTabbedPane1.add("Information", panelinfo);
             PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc(), idemp);
             PanelTransaction jPanelTransaction = new PanelTransaction(idemp, idc);
-            PanelCards jPanelCards = new PanelCards();
+            
             jTabbedPane1.add("Accounts", jPanelAccounts);
             jTabbedPane1.add("Transactions", jPanelTransaction);
-            jTabbedPane1.add("Cards", jPanelCards);
+            
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InstantiationException ex) {

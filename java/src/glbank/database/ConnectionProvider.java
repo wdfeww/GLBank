@@ -1,6 +1,7 @@
 package glbank.database;
 
 import glbank.Account;
+import glbank.Card;
 import glbank.Client;
 import glbank.Employee;
 import glbank.Transaction;
@@ -501,7 +502,24 @@ public class ConnectionProvider {
     
     
     
-    
+     public boolean existsCard(Card card) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+    boolean exist = false;
+        String query = "SELECT * FROM Cards WHERE cardnumber = ? ";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setLong(1, card.getCardnumber());
+                ResultSet rs = ps.executeQuery();
+                exist = rs.next();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: 'existsCard' " + ex.toString());
+            }
+        }
+        
+        return exist;
+    }
     
     
     
