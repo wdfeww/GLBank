@@ -29,6 +29,7 @@ public class PanelAccounts extends javax.swing.JPanel  {
     private List<Card> cards;
     Transaction trans;
     private int idemp;
+    private int indexCard;
 
   
     public PanelAccounts(int idc, int idemp) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
@@ -38,7 +39,13 @@ public class PanelAccounts extends javax.swing.JPanel  {
         initAcountList();
         lblBalanceAmount.setText("");
         btnCreateCard.setVisible(false);
-        
+        lblStatus1.setVisible(false);
+        lblStatus.setVisible(false);
+        lblPin.setVisible(false);
+        lblPin1.setVisible(false);
+        btnBlock.setVisible(false);
+        txtChangePin.setVisible(false);
+        btnChangePin.setVisible(false);
     }
 
     /**
@@ -63,6 +70,13 @@ public class PanelAccounts extends javax.swing.JPanel  {
         jLabel5 = new javax.swing.JLabel();
         comboCards = new javax.swing.JComboBox<>();
         btnCreateCard = new javax.swing.JToggleButton();
+        lblStatus1 = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        lblPin1 = new javax.swing.JLabel();
+        lblPin = new javax.swing.JLabel();
+        btnBlock = new javax.swing.JButton();
+        txtChangePin = new javax.swing.JTextField();
+        btnChangePin = new javax.swing.JButton();
 
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +138,28 @@ public class PanelAccounts extends javax.swing.JPanel  {
             }
         });
 
+        lblStatus1.setText("Status:");
+
+        lblStatus.setText("blocked");
+
+        lblPin1.setText("Pin:");
+
+        lblPin.setText("0215");
+
+        btnBlock.setText("Block");
+        btnBlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBlockActionPerformed(evt);
+            }
+        });
+
+        btnChangePin.setText("Change pin");
+        btnChangePin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePinActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,8 +168,20 @@ public class PanelAccounts extends javax.swing.JPanel  {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(32, 32, 32)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBalanceAmount)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboCards, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -148,29 +196,41 @@ public class PanelAccounts extends javax.swing.JPanel  {
                                 .addComponent(jLabel3))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2))
-                                    .addGap(32, 32, 32)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblBalanceAmount)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(comboCards, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(btnCreateCard))
+                            .addComponent(jButton3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(txtChangePin, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnChangePin))
+                            .addComponent(btnCreateCard)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblStatus1)
+                                    .addComponent(lblPin1))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPin)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblStatus)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnBlock)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(lblBalanceAmount)))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -179,45 +239,60 @@ public class PanelAccounts extends javax.swing.JPanel  {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
-                            .addComponent(jButton2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(lblBalanceAmount))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(comboCards, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCreateCard)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                            .addComponent(jButton2))))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(comboCards, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCreateCard)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStatus1)
+                    .addComponent(lblStatus)
+                    .addComponent(btnBlock))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPin1)
+                    .addComponent(lblPin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtChangePin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnChangePin))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jButton3)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         index = jComboBox1.getSelectedIndex();
-
+        if(index == 0){
+            btnBlock.setVisible(false);
+            lblStatus1.setVisible(false);
+            lblStatus.setVisible(false);
+            lblPin.setVisible(false);
+            lblPin1.setVisible(false);
+            txtChangePin.setVisible(false);
+        btnChangePin.setVisible(false);
+        btnCreateCard.setVisible(false);
+        }
         if (index > 0) {
+            btnBlock.setVisible(false);
             try {
                 lblBalanceAmount.setText(new ConnectionProvider().getBalance(list.get(index - 1).getIdacc()) + " EUR");
                 
                  cards = new ConnectionProvider().getCards(list.get(index - 1).getIdacc());
-                 
-        if (cards.isEmpty()) {
+                
+                     
+        if (cards.isEmpty()||index == 0) {
             comboCards.removeAllItems();
             comboCards.addItem("No cards in this account");
             btnCreateCard.setVisible(true);
             
-            return;
+           
         } else {
-             btnCreateCard.setVisible(false);
+             btnCreateCard.setVisible(true);
             comboCards.removeAllItems();
             comboCards.addItem("Choose:");
             if (cards != null && cards.size() > 0) {
@@ -297,16 +372,18 @@ public class PanelAccounts extends javax.swing.JPanel  {
     }
       
     private int generatePin() {
-        String generatedPin = "";
         int pin;
-        do {
+        
+            String generatedPin = "";
+        
             for (int i = 0; i < 4; i++) {
                 Random ran = new Random();
                 int x = ran.nextInt(9) + 1;
                 generatedPin += x;
             }
             pin = Integer.parseInt(generatedPin);
-        } while (pin % 11 == 0);
+       
+      
         return pin;
     }
     
@@ -390,9 +467,11 @@ public class PanelAccounts extends javax.swing.JPanel  {
 
     private void btnCreateCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateCardActionPerformed
         try {
-            new ConnectionProvider().createCard(new Card(0,generateCard(),list.get(index - 1).getIdacc(),false,generatePin()));
+            int npin = generatePin();
+            long ncard = generateCard();
+            new ConnectionProvider().createCard(new Card(0,ncard,list.get(index - 1).getIdacc(),false,npin));
             btnCreateCard.setVisible(false);
-            JOptionPane.showMessageDialog(null, " Card was created! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, " Card: "+ncard+" was created! Pin: "+npin , "" , JOptionPane.INFORMATION_MESSAGE);
             initAcountList();
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, " Error! Card was not created! " , "" , JOptionPane.INFORMATION_MESSAGE);
@@ -411,10 +490,124 @@ public class PanelAccounts extends javax.swing.JPanel  {
     }//GEN-LAST:event_btnCreateCardActionPerformed
 
     private void comboCardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCardsActionPerformed
-        
+            indexCard = comboCards.getSelectedIndex(); 
+                    lblStatus1.setVisible(false);
+                    lblStatus.setVisible(false);
+                    lblPin.setVisible(false);
+                    lblPin1.setVisible(false);
+                 txtChangePin.setVisible(false);
+                 txtChangePin.setText("");
+        btnChangePin.setVisible(false);
+                   
+                  
+                if(indexCard>0){
+                    lblStatus1.setVisible(true);
+                    lblStatus.setVisible(true);
+                    lblPin.setVisible(true);
+                    lblPin1.setVisible(true);
+                    txtChangePin.setVisible(true);
+                    txtChangePin.setText("");
+                    btnChangePin.setVisible(true);
+                    if(cards.get(indexCard - 1).isBlocked()){
+                         lblStatus.setText("Blocked");
+                    }else
+                        lblStatus.setText("Not blocked");
+                    lblPin.setText(""+cards.get(indexCard - 1).getPin());
+                    
+                      if(lblStatus.isVisible()&&lblStatus.getText()=="Not blocked"){
+                          btnBlock.setVisible(true);
+                          btnBlock.setText("Block");
+                        
+                        
+                    }else{
+                        btnBlock.setVisible(true);
+                        btnBlock.setText("Unblock");
+                      }
+                 
+            }
+           
+            
     }//GEN-LAST:event_comboCardsActionPerformed
 
+    private void btnBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlockActionPerformed
+       
+        
+        if(btnBlock.getText()=="Block"){
+        try {
+            JOptionPane.showMessageDialog(null, " Card was blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            new ConnectionProvider().blockCard(cards.get(indexCard - 1).getCardnumber());
+            initAcountList();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        }}
+        else{
+           try {
+            JOptionPane.showMessageDialog(null, " Card was unblocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            new ConnectionProvider().unblockCard(cards.get(indexCard - 1).getCardnumber());
+            initAcountList();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " Error! Card was not blocked! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        }
+    }//GEN-LAST:event_btnBlockActionPerformed
+
+    private void btnChangePinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePinActionPerformed
+        int pin=0000; 
+        try{
+        pin = Integer.parseInt(txtChangePin.getText());
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, " Error! Pin must be number! " , "" , JOptionPane.INFORMATION_MESSAGE);
+            System.out.println("Error: 'parsing pin to number' "+ex);
+        }
+        if(txtChangePin.getText().length()!=4){
+            JOptionPane.showMessageDialog(null, " Error! Pin must contain of 4 numbers! " , "" , JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            try {
+                new ConnectionProvider().changePin(cards.get(indexCard - 1).getCardnumber(), pin);
+                JOptionPane.showMessageDialog(null, " Pin changed! " , "" , JOptionPane.INFORMATION_MESSAGE);
+                initAcountList();
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Error: Pin was not changed! " , "" , JOptionPane.INFORMATION_MESSAGE);
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                JOptionPane.showMessageDialog(null, "Error: Pin was not changed! " , "" , JOptionPane.INFORMATION_MESSAGE);
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                JOptionPane.showMessageDialog(null, "Error: Pin was not changed! " , "" , JOptionPane.INFORMATION_MESSAGE);
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error: Pin was not changed! " , "" , JOptionPane.INFORMATION_MESSAGE);
+                Logger.getLogger(PanelAccounts.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
+        
+        
+    }//GEN-LAST:event_btnChangePinActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBlock;
+    private javax.swing.JButton btnChangePin;
     private javax.swing.JToggleButton btnCreateCard;
     private javax.swing.JComboBox<String> comboCards;
     private javax.swing.JButton jButton1;
@@ -428,9 +621,22 @@ public class PanelAccounts extends javax.swing.JPanel  {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblBalanceAmount;
+    private javax.swing.JLabel lblPin;
+    private javax.swing.JLabel lblPin1;
+    private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblStatus1;
+    private javax.swing.JTextField txtChangePin;
     // End of variables declaration//GEN-END:variables
 
     private void initAcountList() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        btnCreateCard.setVisible(false);
+        comboCards.removeAllItems();
+        lblStatus1.setVisible(false);
+        lblStatus.setVisible(false);
+        lblPin.setVisible(false);
+        lblPin1.setVisible(false);
+        btnBlock.setVisible(false);
+        txtChangePin.setText("");
         list = new ConnectionProvider().getAccounts(idc);
         if (list == null) {
             return;

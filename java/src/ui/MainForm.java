@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ui.panels.HistoryOfTransactions;
 
 
 /**
@@ -211,9 +212,10 @@ public class MainForm extends javax.swing.JFrame {
             jTabbedPane1.add("Information", panelinfo);
             PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc(), idemp);
             PanelTransaction jPanelTransaction = new PanelTransaction(idemp, idc);
-            
+            HistoryOfTransactions jHistoryOfTransactions = new HistoryOfTransactions();
             jTabbedPane1.add("Accounts", jPanelAccounts);
             jTabbedPane1.add("Transactions", jPanelTransaction);
+            jTabbedPane1.add("History of transactions", jHistoryOfTransactions);
             
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);

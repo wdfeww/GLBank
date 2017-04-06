@@ -557,6 +557,54 @@ public class ConnectionProvider {
         return cards;
      }
     
+      public void blockCard(long cardNumber) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String query = "UPDATE Cards SET blocked = true WHERE cardnumber = ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setLong(1, cardNumber);
+                ps.execute();
+
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+    }
+      
+       public void unblockCard(long cardNumber) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String query = "UPDATE Cards SET blocked = false WHERE cardnumber = ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setLong(1, cardNumber);
+                ps.execute();
+
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+    }
+      
+      
+      public void changePin(long cardNumber,int pin) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        String query = "UPDATE Cards SET pin = ? WHERE cardnumber = ?";
+        Connection conn = getConnection();
+        if (conn != null) {
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setInt(1, pin);
+                ps.setLong(2, cardNumber);
+                ps.execute();
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println("Error: " + ex.toString());
+            }
+        }
+    }
     
 }
 

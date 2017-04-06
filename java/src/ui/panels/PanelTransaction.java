@@ -22,7 +22,9 @@ public class PanelTransaction extends javax.swing.JPanel {
     private int idemp;
     private List<Account> list; 
     private int idc;
-    int index;
+    private int index;
+    private int indexBank;
+    ConnectionProvider connection = new ConnectionProvider();
     /**
      * Creates new form PanelTransaction
      */
@@ -63,8 +65,8 @@ public class PanelTransaction extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         txtDestAcc = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDestBankCode = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        comboBankCode = new javax.swing.JComboBox<>();
 
         jLabel1.setText("Source account: ");
 
@@ -88,12 +90,17 @@ public class PanelTransaction extends javax.swing.JPanel {
 
         jLabel4.setText("Destination bank code:");
 
-        txtDestBankCode.setText("2701");
-
         jButton1.setText("Send");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        comboBankCode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "GLBank (2701)", "ČSOB (7500)", "mBank (8360)", "ING Bank (7300)" }));
+        comboBankCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBankCodeActionPerformed(evt);
             }
         });
 
@@ -113,10 +120,10 @@ public class PanelTransaction extends javax.swing.JPanel {
                             .addComponent(jLabel4))
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtDestBankCode)
                             .addComponent(jComboBox1, 0, 179, Short.MAX_VALUE)
                             .addComponent(txtAmount)
-                            .addComponent(txtDestAcc))))
+                            .addComponent(txtDestAcc)
+                            .addComponent(comboBankCode, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(374, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -137,25 +144,75 @@ public class PanelTransaction extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDestBankCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                    .addComponent(comboBankCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        long destacc;
+        int destbank;
+        
+        switch (indexBank) {
+            case 0:  destbank = 2701;
+                     break;
+            case 1:  destbank = 7500;
+                     break;
+            case 2:  destbank = 8360;
+                     break;
+            case 3:  destbank = 7300;
+                     break; 
+            default: destbank = 2701;
+                     break; 
+        }
+        
+        try{
+          destacc = Long.parseLong(txtDestAcc.getText());
+        
+        if(txtDestAcc.getText().length()!=10){
+            JOptionPane.showMessageDialog(null, "Wrong destination bank account!" , "" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+        if(destbank==2701){
+            try {
+                if(connection.existsAccount(new Account (destacc, 0, 0))){
+                    createTransaction(destacc,destbank);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Wrong destination bank account!" , "" , JOptionPane.INFORMATION_MESSAGE);
+                }
+                    } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            createTransaction(destacc,destbank);
+        }
+        }
+    }catch(Exception ex){
+            System.out.println("Error: " +ex);
+        }
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void createTransaction(long destacc, int destbank){
         Account srcacc = list.get(index - 1);
         float amount = Float.parseFloat(txtAmount.getText());
-        long destacc = Long.parseLong(txtDestAcc.getText());
-        int destbank = Integer.parseInt(txtDestBankCode.getText());
-        ConnectionProvider connection = new ConnectionProvider();
-        
         if(list.get(index - 1).getBalance()>=amount){
         try {
             list.get(index - 1).setBalance((list.get(index - 1).getBalance() - amount));
             Transaction trans = new Transaction(amount,"",idemp,srcacc,destacc,2701,destbank);
             connection.updateBankTransactions(trans);
+            txtAmount.setText("");
+            txtDestAcc.setText("");
             JOptionPane.showMessageDialog(null, "Trasaction done!" , "" , JOptionPane.INFORMATION_MESSAGE);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(PanelTransaction.class.getName()).log(Level.SEVERE, null, ex);
@@ -172,8 +229,8 @@ public class PanelTransaction extends javax.swing.JPanel {
         }
         }else
             JOptionPane.showMessageDialog(null, "Lack of money in the account!!" , "" , JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
        index = jComboBox1.getSelectedIndex();
     }//GEN-LAST:event_jComboBox1ActionPerformed
@@ -182,8 +239,13 @@ public class PanelTransaction extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtAmountActionPerformed
 
+    private void comboBankCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBankCodeActionPerformed
+       indexBank = comboBankCode.getSelectedIndex();
+    }//GEN-LAST:event_comboBankCodeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> comboBankCode;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -192,6 +254,5 @@ public class PanelTransaction extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextField txtDestAcc;
-    private javax.swing.JTextField txtDestBankCode;
     // End of variables declaration//GEN-END:variables
 }
