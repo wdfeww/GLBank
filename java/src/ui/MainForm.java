@@ -212,7 +212,7 @@ public class MainForm extends javax.swing.JFrame {
             jTabbedPane1.add("Information", panelinfo);
             PanelAccounts jPanelAccounts = new PanelAccounts(client.getIdc(), idemp);
             PanelTransaction jPanelTransaction = new PanelTransaction(idemp, idc);
-            HistoryOfTransactions jHistoryOfTransactions = new HistoryOfTransactions();
+            HistoryOfTransactions jHistoryOfTransactions = new HistoryOfTransactions(idc);
             jTabbedPane1.add("Accounts", jPanelAccounts);
             jTabbedPane1.add("Transactions", jPanelTransaction);
             jTabbedPane1.add("History of transactions", jHistoryOfTransactions);

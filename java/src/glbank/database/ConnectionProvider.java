@@ -5,6 +5,7 @@ import glbank.Card;
 import glbank.Client;
 import glbank.Employee;
 import glbank.Transaction;
+import glbank.TransactionHistory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -605,7 +606,42 @@ public class ConnectionProvider {
             }
         }
     }
-    
+     public List<TransactionHistory> getTransactionHistory(long idacc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+          List<TransactionHistory> th =  new ArrayList<>();
+         
+        String query1 = "SELECT * FROM banktransactions WHERE srcacc = ?";
+        String query2 = "SELECT * FROM banktransactions WHERE destacc = ?";
+        String query3 = "SELECT * FROM cashtransactions WHERE idacc = ?";
+        Connection conn = getConnection();
+        try {
+                 PreparedStatement ps1 = conn.prepareStatement(query1);
+                 PreparedStatement ps2 = conn.prepareStatement(query2);
+                 PreparedStatement ps3 = conn.prepareStatement(query3);
+                 ps1.setLong(1, idacc );
+                 ps2.setLong(1, idacc );
+                 ps3.setLong(1, idacc );
+                 ResultSet rs1  = ps1.executeQuery();
+                 ResultSet rs2  = ps2.executeQuery();
+                 ResultSet rs3  = ps3.executeQuery();
+                 if(conn!=null){
+                     
+                       while(rs1.next()){
+                           th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs1.getDate("transdatetime")),"Bank transaction transferred",((-1)*rs1.getFloat("amount"))));
+                            }
+                         while(rs2.next()){
+                             th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs2.getDate("transdatetime")),"Bank transaction received",((-1)*rs2.getFloat("amount"))));
+                            }
+                 while(rs3.next()){
+                     th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs3.getDate("cashdatetime")),"Cash transactions",((-1)*rs3.getFloat("amount"))));
+                            }
+                 }
+                       conn.close();
+                }
+         catch (SQLException ex) {
+            System.out.println("Error:  'getTransactionHistory'" + ex.toString());
+        }
+        return th;
+     }
 }
 
 
