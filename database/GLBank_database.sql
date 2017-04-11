@@ -148,7 +148,7 @@ CREATE TABLE BankTransactions (
     idemp INTEGER NOT NULL,
     amount FLOAT(10,2) NOT NULL,
     idacc BIGINT NOT NULL,
-	cashdatetime DATETIME NOT NULL,
+	transdatetime DATETIME NOT NULL,
     PRIMARY KEY (idct),
     FOREIGN KEY (idemp)
      REFERENCES  Employees(idemp)
@@ -178,3 +178,24 @@ CREATE TABLE BankTransactions (
         REFERENCES  Cards(idcard)
         ON DELETE CASCADE ON UPDATE RESTRICT
      );
+     
+     
+     
+     CREATE VIEW TransactionHistory
+     AS SELECT transdatetime, idacc, amount, 'Cash transaction' AS des
+               FROM cashtransactions
+	 UNION ALL
+	 SELECT transdatetime, srcacc as idacc, amount, CONCAT('Bank transaction: ',IFNULL(description,'')) AS des
+               FROM banktransactions
+	 UNION ALL
+	 SELECT transdatetime, destacc as idacc, (-1)*amount, CONCAT('Bank transaction: ',IFNULL(description,'')) AS des
+               FROM banktransactions
+	 ORDER BY transdatetime desc;
+               
+               
+               
+               
+               
+               
+               
+               

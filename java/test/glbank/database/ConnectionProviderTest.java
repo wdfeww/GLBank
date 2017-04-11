@@ -156,36 +156,7 @@ public class ConnectionProviderTest {
         // TODO review the generated test code and remove the default call to fail.
         
     }
-    /**
-     * Test of getDateTime method, of class ConnectionProvider.
-     */
-   /* @Test
-    public void testGetDateTime() {
-        System.out.println("getDateTime");
-        ConnectionProvider instance = new ConnectionProvider();
-        String expResult = "";
-        String result = instance.getDateTime();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        
-    }*/
-
-    /**
-     * Test of logEmployeeAccess method, of class ConnectionProvider.
-     */
-    /*@Test
-    public void testLogEmployeeAccess() throws Exception {
-        System.out.println("logEmployeeAccess");
-        int id = 0;
-        ConnectionProvider instance = new ConnectionProvider();
-        instance.logEmployeeAccess(id);
-        // TODO review the generated test code and remove the default call to fail.
-        
-    }*/
-
-    /**
-     * Test of getEmployee method, of class ConnectionProvider.
-     */
+ 
     
     @Test
     public void testGetEmployee() throws Exception {

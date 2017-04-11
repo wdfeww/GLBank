@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -424,7 +425,7 @@ public class ConnectionProvider {
     }
     
     public void writeLogCashTransaction(Connection conn, int idemp,long idacc, char mark, float amount){
-         String query = "INSERT INTO CashTransactions(idemp,amount,idacc,cashdatetime) VALUE (?,?,?,NOW())";
+         String query = "INSERT INTO CashTransactions(idemp,amount,idacc,transdatetime) VALUE (?,?,?,NOW())";
         
         try{
                 PreparedStatement ps = conn.prepareStatement(query);
@@ -609,31 +610,19 @@ public class ConnectionProvider {
      public List<TransactionHistory> getTransactionHistory(long idacc) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
           List<TransactionHistory> th =  new ArrayList<>();
          
-        String query1 = "SELECT * FROM banktransactions WHERE srcacc = ?";
-        String query2 = "SELECT * FROM banktransactions WHERE destacc = ?";
-        String query3 = "SELECT * FROM cashtransactions WHERE idacc = ?";
+        String query = "select * from TransactionHistory where idacc = ?";
+      
         Connection conn = getConnection();
         try {
-                 PreparedStatement ps1 = conn.prepareStatement(query1);
-                 PreparedStatement ps2 = conn.prepareStatement(query2);
-                 PreparedStatement ps3 = conn.prepareStatement(query3);
-                 ps1.setLong(1, idacc );
-                 ps2.setLong(1, idacc );
-                 ps3.setLong(1, idacc );
-                 ResultSet rs1  = ps1.executeQuery();
-                 ResultSet rs2  = ps2.executeQuery();
-                 ResultSet rs3  = ps3.executeQuery();
+                 PreparedStatement ps = conn.prepareStatement(query);
+                 ps.setLong(1, idacc );
+                 ResultSet rs  = ps.executeQuery();
+                 
                  if(conn!=null){
                      
-                       while(rs1.next()){
-                           th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs1.getDate("transdatetime")),"Bank transaction transferred",((-1)*rs1.getFloat("amount"))));
-                            }
-                         while(rs2.next()){
-                             th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs2.getDate("transdatetime")),"Bank transaction received",((-1)*rs2.getFloat("amount"))));
-                            }
-                 while(rs3.next()){
-                     th.add(new TransactionHistory((new SimpleDateFormat("dd-MM-yyyy")).format(rs3.getDate("cashdatetime")),"Cash transactions",((-1)*rs3.getFloat("amount"))));
-                            }
+                       while(rs.next()){
+                           th.add(new TransactionHistory((new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(rs.getDate("transdatetime")),rs.getString("des"),(rs.getFloat("amount"))));
+                       }
                  }
                        conn.close();
                 }
@@ -641,6 +630,10 @@ public class ConnectionProvider {
             System.out.println("Error:  'getTransactionHistory'" + ex.toString());
         }
         return th;
+     }
+     
+     public List<TransactionHistory> sortByDate(List<TransactionHistory> th){
+         return th;
      }
 }
 

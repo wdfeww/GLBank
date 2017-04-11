@@ -6,16 +6,20 @@
 
 package glbank;
 
+import java.util.Date;
+
 
 public class TransactionHistory {
     private String date;
     private String desc;
     private float amount;
+    
 
     public TransactionHistory(String date, String desc, float amount) {
         this.date = date;
         this.desc = desc;
         this.amount = amount;
+        
     }
 
     public String getDate() {
@@ -29,5 +33,7 @@ public class TransactionHistory {
     public float getAmount() {
         return amount;
     }
+
+    
     
 }

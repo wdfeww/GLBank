@@ -244,15 +244,12 @@ public class HistoryOfTransactions extends javax.swing.JPanel {
         }
     }
     private void checkSize(){
-        System.out.println(data.size());
-        System.out.println(data.size()>20);
+        
         if(data.size()-a>20){
             jButton1.setEnabled(true);
-            System.out.println("button next enabled");
         }
         else{
-            System.out.println("button next disabled");
-            jButton1.setEnabled(false);
+             jButton1.setEnabled(false);
         }
         if(tab>1){
              jButton2.setEnabled(true);
