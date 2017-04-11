@@ -82,7 +82,7 @@ public class HistoryOfTransactions extends javax.swing.JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Date and time", "Description", "Amount"
+                "Date", "Description", "Amount"
             }
         ) {
             Class[] types = new Class [] {
@@ -212,7 +212,7 @@ public class HistoryOfTransactions extends javax.swing.JPanel {
        jTable1.setModel(new javax.swing.table.DefaultTableModel(
                  object,
                 new String[]{
-                    "Date and time", "Description", "Amount"
+                    "Date", "Description", "Amount"
                 }
         ) {
             Class[] types = new Class[]{

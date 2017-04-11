@@ -621,7 +621,7 @@ public class ConnectionProvider {
                  if(conn!=null){
                      
                        while(rs.next()){
-                           th.add(new TransactionHistory((new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(rs.getDate("transdatetime")),rs.getString("des"),(rs.getFloat("amount"))));
+                           th.add(new TransactionHistory((new SimpleDateFormat("yyyy-MM-dd")).format(rs.getDate("transdatetime")),rs.getString("des"),(rs.getFloat("amount"))));
                        }
                  }
                        conn.close();
