@@ -57,6 +57,7 @@ namespace ATM
                 finally
                 {
                     reader.Close();
+                    connection.Close();
                 }
                
            
@@ -89,6 +90,7 @@ namespace ATM
                 finally
                 {
                     reader.Close();
+                    connection.Close();
                 }
 
 
@@ -97,5 +99,129 @@ namespace ATM
 
         }
 
+        public bool isPinCorrect(long idcard, int pin)
+        {
+            string query = "SELECT * FROM cards WHERE cardnumber =" + idcard.ToString() +" AND pin =" +pin.ToString();
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    reader = cmd.ExecuteReader();
+                    return reader.Read();
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    reader.Close();
+                    connection.Close();
+                }
+
+
+            }
+            return false;
+
+        }
+
+
+        public void changePassword(long idcard, int pin)
+        {
+            string query = "UPDATE cards SET pin =" + pin.ToString() + " where cardnumber = " + idcard.ToString();
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+
+            }
+           
+
+        }
+
+        
+        public float getBalance(long idcard)
+        {
+            string query = "SELECT balance FROM accounts INNER JOIN cards ON accounts.idacc = cards.idacc WHERE cardnumber = " + idcard.ToString();
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                    
+                        return reader.GetFloat("balance");
+                    }
+                    
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    reader.Close();
+                    connection.Close();
+                }
+
+
+            }
+            return -1;
+
+        }
+
+        public void withdrawMoney(long idcard, float money)
+        {
+            string query = "UPDATE accounts SET balance = (balance - " + money + ") where idacc = (SELECT idacc FROM cards where cardnumber = " + idcard + ")";
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+
+            }
+
+
+        }
     }
 }

@@ -9,3 +9,14 @@ C:\Users\Client\Documents\wdfeww\27102016\ATM\ATM\obj\Debug\ATM.csproj.GenerateR
 C:\Users\Client\Documents\wdfeww\27102016\ATM\ATM\obj\Debug\ATM.exe
 C:\Users\Client\Documents\wdfeww\27102016\ATM\ATM\obj\Debug\ATM.pdb
 C:\Users\Client\Documents\wdfeww\27102016\ATM\ATM\bin\Debug\MySql.Data.dll
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\bin\Debug\ATM.exe.config
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.exe
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.pdb
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\bin\Debug\ATM.exe
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\bin\Debug\ATM.pdb
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\bin\Debug\MySql.Data.dll
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.csprojResolveAssemblyReference.cache
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.Form1.resources
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.Form2.resources
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.Properties.Resources.resources
+C:\Users\Client\Desktop\GLBanks\ATM\ATM\obj\Debug\ATM.csproj.GenerateResource.Cache
