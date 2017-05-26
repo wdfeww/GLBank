@@ -196,7 +196,7 @@ namespace ATM
 
         }
 
-        public void withdrawMoney(long idcard, float money)
+        public void withdrawMoney(long idcard, int money)
         {
             string query = "UPDATE accounts SET balance = (balance - " + money + ") where idacc = (SELECT idacc FROM cards where cardnumber = " + idcard + ")";
             MySqlConnection connection = OpenConnection();
@@ -208,6 +208,69 @@ namespace ATM
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     connection.Open();
                     cmd.ExecuteNonQuery();
+                    insertLog(idcard, money);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+
+            }
+
+
+        }
+        private int getIDCard(long cardnumber)
+        {
+            string query = "SELECT idcard FROM cards WHERE cardnumber = "+cardnumber;
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+
+                        return reader.GetInt32("idcard");
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! " + ex.ToString());
+                }
+                finally
+                {
+                    reader.Close();
+                    connection.Close();
+                }
+
+
+            }
+            return -1;
+        }
+        public void insertLog(long idcard, float money)
+        {
+            string query = "INSERT INTO atmwithdrawals(amount, idatm, atmdatetime, idcard) VALUES("+money+", 1, NOW(), "+getIDCard(idcard)+")";
+            MySqlConnection connection = OpenConnection();
+
+            if (connection != null)
+            {
+                try
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                   
                 }
                 catch (Exception ex)
                 {

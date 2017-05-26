@@ -23,7 +23,13 @@ namespace ATM
                                 "Pin bol zmenený",
                                 "Pin nebol zmenený: pin kódy nie su rovnaké!",
                                 "Váš aktuálny stav účtu je",
-                                "iná suma"};
+                                "iná suma",
+                                "Potvrdenie",
+                                "Áno",
+                                "Nie",
+                                "Zadajte sumu:",
+                                "Suma musí byť delitelná desiatkou!",
+                                "Nedostatok penazí na účte!"};
         string[] messagesEN = { "Enter pin",
                                 "Number of attempts",
                                 "Card is blocked",
@@ -37,7 +43,13 @@ namespace ATM
                                 "Pin was chaged",
                                 "Pin was not chaged: pin codes are not same!",
                                 "Your account balance is",
-                                "other"};
+                                "other",
+                                "Confirmation",
+                                "Yes",
+                                "No",
+                                "Set value:",
+                                "Value must be divisible by ten!",
+                                "Lack of funds on the account!"};
         public Strings(Lang language)
         {
             this.language = language;

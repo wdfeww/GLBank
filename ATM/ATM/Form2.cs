@@ -13,20 +13,22 @@ namespace ATM
 {
     public enum State
     {
-        LOGIN, CHOOSELANGUAGE,MAINSCREEN,CHANGEPASSWORD, CONFIRMCHANGEPASSWORD, BALANCE, WITHDRAWMONEY
+        LOGIN, CHOOSELANGUAGE,MAINSCREEN,CHANGEPASSWORD, CONFIRMCHANGEPASSWORD, BALANCE, WITHDRAWMONEY, CONFIRMWITHDRAW, OTHERVALUE, ERROR
     }
     public enum Lang
     {
         SLOVAK, ENGLISH
     }
+    
     public partial class Form2 : Form
     {
+        private int[] array = new int[] { 0, 0, 0, 0, 0, 0 };
         private int wAmount;
         private string[] messages;
         private Bitmap picture;
         private Graphics g;
         private long id;
-        private String pinCode = "", newPinCode="", newPinCodeConfirm = "";
+        private String pinCode = "", newPinCode="", newPinCodeConfirm = "", value="";
         private int numberOfAttempts = 3;
         private State state;
         private Lang language;
@@ -519,8 +521,100 @@ namespace ATM
                     }
                 }
             }
+            else if(state == State.WITHDRAWMONEY)
+            {
+                calculateAmount();
+                createTransaction();
+            }
+            else if (state == State.OTHERVALUE)
+            {
+                if (Int32.Parse(value) % 10 == 0)
+                {
+                    wAmount = Int32.Parse(value);
+                    createTransaction();
+                }
+                else
+                {
+                    error(messages[18]);
+                }
+                
+            }
         }
+        private void error(string errorString)
+        {
+            state = State.ERROR;
+            g.Clear(Color.White);
+            g.DrawString(errorString, new Font("Tahoma", 18), Brushes.Red, new Point(150, 200));
+            setLeft1(messages[7]);
+            pictureBox1.Image = picture;
+        }
+        private void createTransaction()
+        {
+           if( new Database().getBalance(id) > wAmount)
+            {
+                confirmWithdraw();
+            }
+            else
+            {
+                error(messages[19]);
+            }
+        }
+        private void otherValue()
+        {
+            state = State.OTHERVALUE;
+            g.Clear(Color.White);
+            toggleButtons(true, false, false, false, false, false, false, false);
+            setLeft1(messages[7]);
+            g.DrawString(messages[17], new Font("Tahoma", 18), Brushes.Black, new Point(150, 150));
+            g.DrawString(value + " €", new Font("Tahoma", 18), Brushes.Black, new Point(150, 200));
+            pictureBox1.Image = picture;
 
+        }
+        private void confirmWithdraw()
+        {
+            state = State.CONFIRMWITHDRAW;
+            g.Clear(Color.White);
+            toggleButtons(false, false, false, true, false, false, false, true);
+            g.DrawString(messages[14], new Font("Tahoma", 18), Brushes.Green, new Point(150, 150));
+            setLeft4(messages[15]);
+            setRight4(messages[16]);
+            pictureBox1.Image = picture;
+        }
+        private void calculateAmount()
+        {
+            if (state == State.WITHDRAWMONEY)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if (array[i] != 0)
+                    {
+                        int typeM = 0;
+                        switch (i)
+                        {
+                            case 0:
+                                typeM = 10;
+                                break;
+                            case 1:
+                                typeM = 20;
+                                break;
+                            case 2:
+                                typeM = 50;
+                                break;
+                            case 3:
+                                typeM = 100;
+                                break;
+                            case 4:
+                                typeM = 200;
+                                break;
+                            case 5:
+                                typeM = 500;
+                                break;
+                        }
+                        wAmount += array[i] * typeM;
+                    }
+                }
+            }
+        }
         private void btn_left4_Click(object sender, EventArgs e)
         {
             if (state == State.CHOOSELANGUAGE)
@@ -541,9 +635,14 @@ namespace ATM
             }
             else if(state == State.WITHDRAWMONEY)
             {
-                wAmount = 500;
+                array[5]++;
+                withdrawMoney();
             }
-            
+            else if(state == State.CONFIRMWITHDRAW)
+            {
+                new Database().withdrawMoney(id,wAmount);
+                initMainScreen();
+            }
         }
 
         private void btn_right4_Click(object sender, EventArgs e)
@@ -571,11 +670,20 @@ namespace ATM
                 form1.Show();
 
             }
-           
+            else if(state == State.WITHDRAWMONEY)
+            {
+                otherValue();
+            }
+            else if (state == State.CONFIRMWITHDRAW)
+            {
+                
+                initMainScreen();
+            }
+
         }
         private void initMainScreen()
         {
-            
+            array = new int[] { 0, 0, 0, 0, 0, 0 };
             state = State.MAINSCREEN;
             toggleButtons(true, true, false, false, true, false, false, true);
             g.Clear(Color.White);
@@ -597,10 +705,12 @@ namespace ATM
         {
             if(state == State.MAINSCREEN)
             {
+               array = new int[] { 0, 0, 0, 0, 0, 0 };
+                value = "";
                 withdrawMoney();
 
             }
-            else if(state == State.CHANGEPASSWORD || state == State.CONFIRMCHANGEPASSWORD || state == State.BALANCE || state == State.WITHDRAWMONEY)
+            else if(state == State.CHANGEPASSWORD || state == State.CONFIRMCHANGEPASSWORD || state == State.BALANCE || state == State.WITHDRAWMONEY || state == State.OTHERVALUE)
             {
                 newPinCode = "";
                 newPinCodeConfirm = "";
@@ -610,15 +720,38 @@ namespace ATM
         private void withdrawMoney()
         {
             state = State.WITHDRAWMONEY;
+            enableKeyboard(true);
             g.Clear(Color.White);
             toggleButtons(true, true, true, true, true, true, true, true);
             setLeft1(messages[7]);
-            setLeft2("100€");
-            setLeft3("200€");
-            setLeft4("500€");
-            setRight1("10€");
-            setRight2("20€");
-            setRight3("50€");
+            if (array[3] > 0)
+                setLeft2(array[3] + "x 100€");
+            else
+                setLeft2("100€");
+            if (array[4] > 0)
+                setLeft3(array[4] + "x 200€");
+            else
+                setLeft3("200€");
+
+            if (array[5] > 0)
+                setLeft4(array[5] + "x 500€");
+            else
+                setLeft4("500€");
+
+            if (array[0] > 0)
+                setRight1(array[0]+"x 10€");
+            else
+                setRight1("10€");
+
+            if (array[1] > 0)
+                setRight2(array[1] + "x 20€");
+            else
+                setRight2("20€");
+
+            if (array[2] > 0)
+                setRight3(array[2] + "x 50€");
+            else
+                setRight3("50€");
             setRight4(messages[13]);
         }
         private void btn_right1_Click(object sender, EventArgs e)
@@ -630,7 +763,10 @@ namespace ATM
             }
             else if (state == State.WITHDRAWMONEY)
             {
-                wAmount = 10;
+                array[0]++;
+                withdrawMoney();
+
+
             }
         }
 
@@ -638,7 +774,10 @@ namespace ATM
         {
             if (state == State.WITHDRAWMONEY)
             {
-                wAmount = 20;
+                array[1]++;
+                withdrawMoney();
+
+
             }
         }
 
@@ -646,7 +785,8 @@ namespace ATM
         {
             if (state == State.WITHDRAWMONEY)
             {
-                wAmount = 50;
+                array[2]++;
+                withdrawMoney();
             }
         }
 
@@ -654,7 +794,8 @@ namespace ATM
         {
             if(state == State.WITHDRAWMONEY)
             {
-                wAmount = 200;
+                array[4]++;
+                withdrawMoney();
             }
         }
 
@@ -667,7 +808,8 @@ namespace ATM
             }
             else if (state == State.WITHDRAWMONEY)
             {
-                wAmount = 100;
+                array[3]++;
+                withdrawMoney();
             }
         }
         private void showBalance()
