@@ -258,6 +258,7 @@ namespace ATM
             }
             return -1;
         }
+
         public void insertLog(long idcard, float money)
         {
             string query = "INSERT INTO atmwithdrawals(amount, idatm, atmdatetime, idcard) VALUES("+money+", 1, NOW(), "+getIDCard(idcard)+")";

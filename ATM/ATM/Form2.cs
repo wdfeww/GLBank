@@ -542,6 +542,7 @@ namespace ATM
         }
         private void error(string errorString)
         {
+            toggleButtons(true, false,false,false,false,false,false,false);
             state = State.ERROR;
             g.Clear(Color.White);
             g.DrawString(errorString, new Font("Tahoma", 18), Brushes.Red, new Point(150, 200));
@@ -572,6 +573,8 @@ namespace ATM
         }
         private void confirmWithdraw()
         {
+            if (new Database().getBalance(id) >= wAmount)
+            {
             state = State.CONFIRMWITHDRAW;
             g.Clear(Color.White);
             toggleButtons(false, false, false, true, false, false, false, true);
@@ -579,6 +582,11 @@ namespace ATM
             setLeft4(messages[15]);
             setRight4(messages[16]);
             pictureBox1.Image = picture;
+            }
+            else
+            {
+                error(messages[19]);
+            }
         }
         private void calculateAmount()
         {
@@ -640,8 +648,15 @@ namespace ATM
             }
             else if(state == State.CONFIRMWITHDRAW)
             {
-                new Database().withdrawMoney(id,wAmount);
+                if (new Database().getBalance(id) > wAmount)
+                {
+                    new Database().withdrawMoney(id,wAmount);
                 initMainScreen();
+                }
+                else
+                {
+                    error(messages[19]);
+                }
             }
         }
 
@@ -710,7 +725,7 @@ namespace ATM
                 withdrawMoney();
 
             }
-            else if(state == State.CHANGEPASSWORD || state == State.CONFIRMCHANGEPASSWORD || state == State.BALANCE || state == State.WITHDRAWMONEY || state == State.OTHERVALUE)
+            else if(state == State.CHANGEPASSWORD || state == State.CONFIRMCHANGEPASSWORD || state == State.BALANCE || state == State.WITHDRAWMONEY || state == State.OTHERVALUE || state == State.ERROR)
             {
                 newPinCode = "";
                 newPinCodeConfirm = "";
